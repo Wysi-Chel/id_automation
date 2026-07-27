@@ -45,29 +45,16 @@ $recentLogs = $pdo->query(
      ORDER BY a.created_at DESC LIMIT 8"
 )->fetchAll();
 
-$pageTitle = 'Dashboard';
+$pageTitle = 'ID Monitoring';
 $pageSubtitle = 'Overview of employee records and recent system activity.';
 require __DIR__ . '/includes/header.php';
 ?>
-<div class="grid grid-4 mb-18">
+<div class="grid grid-2 mb-18">
     <div class="card stat"><div class="label">Total employee records</div><div class="value"><?= (int) ($stats['total'] ?? 0) ?></div><div class="hint"><?= (int) ($stats['active_count'] ?? 0) ?> active</div></div>
     <div class="card stat"><div class="label">Inactive records</div><div class="value"><?= (int) ($stats['inactive_count'] ?? 0) ?></div><div class="hint">Retained for record history</div></div>
-    <div class="card stat"><div class="label">IDs generated today</div><div class="value"><?= $generatedToday ?></div><div class="hint">Front or back downloads</div></div>
-    <div class="card stat"><div class="label">Record changes today</div><div class="value"><?= $changesToday ?></div><div class="hint">Created, edited, or status changed</div></div>
 </div>
 
-<div class="grid grid-1 mb-18">
-    <section class="card">
-        <div class="card-header"><h2>Employees by department</h2><a class="btn btn-secondary btn-sm" href="employees.php">View records</a></div>
-        <div class="table-wrap">
-            <table><thead><tr><th>Department</th><th>Total</th><th>Active</th></tr></thead><tbody>
-            <?php foreach ($departmentStats as $row): ?>
-                <tr><td><?= e($row['name']) ?></td><td><?= (int) $row['total'] ?></td><td><?= (int) $row['active_count'] ?></td></tr>
-            <?php endforeach; ?>
-            </tbody></table>
-        </div>
-    </section>
-</div>
+
 
 <section class="card">
     <div class="card-header"><h2>Recently added employees</h2><a class="btn btn-primary btn-sm" href="employee_form.php">Add employee</a></div>
@@ -89,4 +76,17 @@ require __DIR__ . '/includes/header.php';
         </tbody></table>
     </div>
 </section>
+<br>
+<div class="grid grid-1 mb-18">
+    <section class="card">
+        <div class="card-header"><h2>Employees by department</h2><a class="btn btn-secondary btn-sm" href="employees.php">View records</a></div>
+        <div class="table-wrap">
+            <table><thead><tr><th>Department</th><th>Total</th><th>Active</th></tr></thead><tbody>
+            <?php foreach ($departmentStats as $row): ?>
+                <tr><td><?= e($row['name']) ?></td><td><?= (int) $row['total'] ?></td><td><?= (int) $row['active_count'] ?></td></tr>
+            <?php endforeach; ?>
+            </tbody></table>
+        </div>
+    </section>
+</div>
 <?php require __DIR__ . '/includes/footer.php'; ?>

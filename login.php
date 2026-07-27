@@ -4,16 +4,20 @@ require_once __DIR__ . '/config/database.php';
 require_once __DIR__ . '/includes/functions.php';
 
 if (current_user()) {
-    redirect('dashboard.php');
+    redirect('systems.php');
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     verify_csrf();
-    $username = trim((string) ($_POST['username'] ?? ''));
     $password = (string) ($_POST['password'] ?? '');
 
-    $stmt = db()->prepare('SELECT * FROM users WHERE username = :username AND is_active = 1 LIMIT 1');
-    $stmt->execute([':username' => $username]);
+    $stmt = db()->query(
+        "SELECT *
+         FROM users
+         WHERE is_active = 1
+         ORDER BY (role = 'Administrator') DESC, id ASC
+         LIMIT 1"
+    );
     $user = $stmt->fetch();
 
     if ($user && password_verify($password, $user['password_hash'])) {
@@ -26,10 +30,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ];
         db()->prepare('UPDATE users SET last_login_at = NOW() WHERE id = ?')->execute([$user['id']]);
         audit_log(db(), 'LOGIN', $user['full_name'] . ' signed in.');
-        redirect('dashboard.php');
+        redirect('systems.php');
     }
 
-    flash('danger', 'Invalid username or password.');
+    flash('danger', 'Invalid password.');
     redirect('login.php');
 }
 
@@ -37,17 +41,13 @@ $pageTitle = 'Sign in';
 require __DIR__ . '/includes/header.php';
 ?>
 <div class="login-card">
-    <h1>Employee ID Maker</h1>
-    <p>Sign in to manage employee records and generate IDs.</p>
+    <h1>Monitoring MIS</h1>
+    <p></p>
     <form method="post">
         <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
         <div class="form-group">
-            <label for="username">Username</label>
-            <input id="username" name="username" autocomplete="username" required autofocus>
-        </div>
-        <div class="form-group">
             <label for="password">Password</label>
-            <input id="password" name="password" type="password" autocomplete="current-password" required>
+            <input id="password" name="password" type="password" autocomplete="current-password" required autofocus>
         </div>
         <button class="btn btn-primary" type="submit">Sign in</button>
     </form>

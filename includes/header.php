@@ -20,18 +20,18 @@ $currentPage = basename($_SERVER['PHP_SELF'] ?? '');
 <?php if ($user): ?>
 <div class="app-shell">
     <aside class="sidebar">
-        <a class="brand" href="dashboard.php">
+        <a class="brand" href="systems.php">
             <span class="brand-mark"><img src="assets/img/favicon.png" alt=""></span>
-            <span><strong>ID Maker</strong><small>Employee Management</small></span>
+            <span><small>MICEI Portal</small><strong>Dashboard</strong></span>
         </a>
         <nav>
-            <a class="<?= $currentPage === 'dashboard.php' ? 'active' : '' ?>" href="dashboard.php">Dashboard</a>
-            <a class="<?= in_array($currentPage, ['employees.php','employee_form.php','employee_view.php','id_maker.php'], true) ? 'active' : '' ?>" href="employees.php">Employee Records</a>
+            <a class="<?= $currentPage === 'dashboard.php' ? 'active' : '' ?>" href="dashboard.php">ID Monitoring</a>
+            <a class="<?= in_array($currentPage, ['employees.php','employee_form.php','employee_view.php','id_maker.php'], true) ? 'active' : '' ?>" href="employees.php">ID Creation</a>
         </nav>
         <div class="sidebar-user">
             <strong><?= e($user['full_name']) ?></strong>
             <small><?= e($user['role']) ?></small>
-            <a href="logout.php">Sign out</a>
+            <a href="systems.php">Sign out</a>
         </div>
     </aside>
     <main class="main-content">

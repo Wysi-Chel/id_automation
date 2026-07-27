@@ -92,4 +92,4 @@ INSERT INTO departments (name, code) VALUES
 ('BRP', 'BRP');
 
 INSERT INTO users (username, full_name, password_hash, role)
-VALUES ('admin', 'System Administrator', '$2y$12$ZwDo3jfGY1XtvNFnn5dprutWKja.TV3g5Fzi443LZ.zYpvHch9uwS', 'Administrator');
+VALUES ('admin', 'System Administrator', '$2y$10$Ww2Mhvi5dql17thz7nHsJelL6AlhtMJHFXWHcVtpsPiAzoguriVBm', 'Administrator');
