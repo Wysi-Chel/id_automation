@@ -1,0 +1,128 @@
+{
+  "source": {
+    "file": "psd - Copy.psd",
+    "sha256": "7047B9ABAE98E8364497C3031330BD64C6258F81684E889064DD30EF21F349B4",
+    "documentSize": {
+      "width": 3570,
+      "height": 2370
+    },
+    "frontGroup": {
+      "name": "1F",
+      "origin": {
+        "x": 166,
+        "y": 125
+      }
+    },
+    "backGroup": {
+      "name": "1B",
+      "origin": {
+        "x": 166,
+        "y": 1261
+      }
+    }
+  },
+  "cardSize": {
+    "width": 600,
+    "height": 960
+  },
+  "fonts": {
+    "medium": "../fonts/MMCOFFICE-Medium.ttf",
+    "bold": "../fonts/MMCOFFICE-Bold.ttf",
+    "regular": "../fonts/MMCOFFICE-Regular.ttf"
+  },
+  "templates": {
+    "front": "front-template.png",
+    "back": "back-template.png",
+    "frontBackgroundLayer": "front-background.png",
+    "frontWatermarkLayer": "front-watermark-overlay.png",
+    "backBackgroundLayer": "back-background.png"
+  },
+  "frontPlacements": {
+    "photo": {
+      "x": 40,
+      "y": 280,
+      "width": 305,
+      "height": 305
+    },
+    "employeeNumber": {
+      "x": 381.25,
+      "firstBaseline": 535.85,
+      "lineHeight": 28.2,
+      "font": "medium",
+      "fontSize": 28.5
+    },
+    "name": {
+      "x": 30.77,
+      "baseline": 650.85,
+      "font": "medium",
+      "fontSize": 37.5,
+      "color": "#e50014"
+    },
+    "position": {
+      "x": 33.1,
+      "baseline": 688.78,
+      "font": "medium",
+      "fontSize": 33.3
+    },
+    "signature": {
+      "x": 227,
+      "y": 733,
+      "width": 151,
+      "height": 91
+    },
+    "signatureLabel": {
+      "centerX": 292.63,
+      "baseline": 818.6,
+      "font": "medium",
+      "fontSize": 25
+    },
+    "department": {
+      "translateX": 483.5,
+      "translateY": 454.7,
+      "rotationDegrees": -90,
+      "lineHeight": 89,
+      "font": "medium",
+      "referenceFontSize": 86.5,
+      "salesOverride": {
+        "translateX": 565,
+        "fontSize": 92
+      }
+    }
+  },
+  "backPlacements": {
+    "emergencyName": {
+      "centerX": 301.15,
+      "baseline": 299.61,
+      "font": "medium",
+      "fontSize": 45.8
+    },
+    "emergencyAddressAndNumber": {
+      "centerX": 299,
+      "firstBaseline": 339.5,
+      "lineHeight": 33.333,
+      "addressLines": 3,
+      "numberBaseline": 430,
+      "font": "medium",
+      "fontSize": 33.333
+    },
+    "dateOfBirth": {
+      "x": 74,
+      "baseline": 640.5,
+      "font": "bold",
+      "fontSize": 25.083
+    },
+    "dateHired": {
+      "x": 393,
+      "baseline": 636.5,
+      "font": "bold",
+      "fontSize": 25.083
+    },
+    "governmentNumbers": {
+      "rightX": 550.38,
+      "firstBaseline": 686.88,
+      "lineHeight": 30.25,
+      "font": "bold",
+      "fontSize": 25.083
+    }
+  }
+}
