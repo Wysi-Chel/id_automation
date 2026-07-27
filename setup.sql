@@ -28,6 +28,7 @@ CREATE TABLE employees (
     suffix VARCHAR(20) NULL,
     position VARCHAR(150) NOT NULL,
     department_id INT UNSIGNED NOT NULL,
+    company_code VARCHAR(10) NOT NULL DEFAULT 'MGSC',
     date_of_birth DATE NULL,
     date_hired DATE NULL,
     sss_number VARCHAR(50) NULL,
@@ -39,6 +40,9 @@ CREATE TABLE employees (
     emergency_contact_number VARCHAR(50) NULL,
     photo_path VARCHAR(255) NULL,
     signature_path VARCHAR(255) NULL,
+    id_is_done TINYINT(1) NOT NULL DEFAULT 0,
+    id_done_by INT UNSIGNED NULL,
+    id_done_at DATETIME NULL,
     status ENUM('Active','Inactive') NOT NULL DEFAULT 'Active',
     created_by INT UNSIGNED NULL,
     updated_by INT UNSIGNED NULL,
@@ -47,8 +51,11 @@ CREATE TABLE employees (
     CONSTRAINT fk_employee_department FOREIGN KEY (department_id) REFERENCES departments(id),
     CONSTRAINT fk_employee_created_by FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL,
     CONSTRAINT fk_employee_updated_by FOREIGN KEY (updated_by) REFERENCES users(id) ON DELETE SET NULL,
+    CONSTRAINT fk_employee_id_done_by FOREIGN KEY (id_done_by) REFERENCES users(id) ON DELETE SET NULL,
     INDEX idx_employee_department (department_id),
+    INDEX idx_employee_company_code (company_code),
     INDEX idx_employee_status (status),
+    INDEX idx_employee_id_done (id_is_done),
     INDEX idx_employee_name (last_name, first_name)
 ) ENGINE=InnoDB;
 
@@ -62,12 +69,17 @@ CREATE TABLE audit_logs (
     new_values JSON NULL,
     ip_address VARCHAR(45) NOT NULL,
     user_agent VARCHAR(500) NULL,
+    is_done TINYINT(1) NOT NULL DEFAULT 0,
+    done_by INT UNSIGNED NULL,
+    done_at DATETIME NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_audit_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
+    CONSTRAINT fk_audit_done_by FOREIGN KEY (done_by) REFERENCES users(id) ON DELETE SET NULL,
     CONSTRAINT fk_audit_employee FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE SET NULL,
     INDEX idx_audit_action (action_type),
     INDEX idx_audit_created (created_at),
-    INDEX idx_audit_employee (employee_id)
+    INDEX idx_audit_employee (employee_id),
+    INDEX idx_audit_done (is_done)
 ) ENGINE=InnoDB;
 
 INSERT INTO departments (name, code) VALUES

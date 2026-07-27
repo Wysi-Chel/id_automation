@@ -15,6 +15,7 @@ if ($id > 0) {
     }
 }
 $departments = $pdo->query('SELECT * FROM departments ORDER BY name')->fetchAll();
+$companies = ID_COMPANIES;
 $pageTitle = $employee ? 'Edit Employee' : 'Add Employee';
 $pageSubtitle = $employee ? 'Update employee information and uploaded images.' : 'Enter the information that will appear on the employee ID.';
 require __DIR__ . '/includes/header.php';
@@ -27,6 +28,7 @@ require __DIR__ . '/includes/header.php';
         <div class="card-body form-grid">
             <div class="form-group"><label>Employee number <span class="required">*</span></label><input name="employee_no" required maxlength="50" value="<?= e($employee['employee_no'] ?? '') ?>"></div>
             <div class="form-group"><label>Department <span class="required">*</span></label><select name="department_id" required><option value="">Select department</option><?php foreach ($departments as $d): ?><option value="<?= (int) $d['id'] ?>" <?= (int)($employee['department_id'] ?? 0) === (int)$d['id'] ? 'selected' : '' ?>><?= e($d['name']) ?></option><?php endforeach; ?></select></div>
+            <div class="form-group full"><label>Company / ID template <span class="required">*</span></label><select name="company_code" required><?php foreach ($companies as $code => $label): ?><option value="<?= e($code) ?>" <?= ($employee['company_code'] ?? 'MGSC') === $code ? 'selected' : '' ?>><?= e($code . ' — ' . $label) ?></option><?php endforeach; ?></select><div class="help">This selects the employee’s default ID design and enables company filtering.</div></div>
             <div class="form-group"><label>First name <span class="required">*</span></label><input name="first_name" required maxlength="100" value="<?= e($employee['first_name'] ?? '') ?>"></div>
             <div class="form-group"><label>Middle name</label><input name="middle_name" maxlength="100" value="<?= e($employee['middle_name'] ?? '') ?>"></div>
             <div class="form-group"><label>Last name <span class="required">*</span></label><input name="last_name" required maxlength="100" value="<?= e($employee['last_name'] ?? '') ?>"></div>

@@ -12,6 +12,8 @@ $currentPage = basename($_SERVER['PHP_SELF'] ?? '');
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= e($pageTitle) ?> · <?= e(APP_NAME) ?></title>
+    <link rel="icon" type="image/png" sizes="145x145" href="assets/img/favicon.png">
+    <meta name="theme-color" content="#e60012">
     <link rel="stylesheet" href="assets/css/app.css">
 </head>
 <body>
@@ -19,12 +21,13 @@ $currentPage = basename($_SERVER['PHP_SELF'] ?? '');
 <div class="app-shell">
     <aside class="sidebar">
         <a class="brand" href="dashboard.php">
-            <span class="brand-mark">M</span>
+            <span class="brand-mark"><img src="assets/img/favicon.png" alt=""></span>
             <span><strong>ID Maker</strong><small>Employee Management</small></span>
         </a>
         <nav>
             <a class="<?= $currentPage === 'dashboard.php' ? 'active' : '' ?>" href="dashboard.php">Dashboard</a>
-            <a class="<?= in_array($currentPage, ['employees.php','employee_form.php','employee_view.php'], true) ? 'active' : '' ?>" href="employees.php">Employee Records</a>        </nav>
+            <a class="<?= in_array($currentPage, ['employees.php','employee_form.php','employee_view.php','id_maker.php'], true) ? 'active' : '' ?>" href="employees.php">Employee Records</a>
+        </nav>
         <div class="sidebar-user">
             <strong><?= e($user['full_name']) ?></strong>
             <small><?= e($user['role']) ?></small>

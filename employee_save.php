@@ -27,6 +27,7 @@ $data = [
     'suffix' => trim((string) ($_POST['suffix'] ?? '')) ?: null,
     'position' => trim((string) ($_POST['position'] ?? '')),
     'department_id' => (int) ($_POST['department_id'] ?? 0),
+    'company_code' => strtoupper(trim((string) ($_POST['company_code'] ?? 'MGSC'))),
     'date_of_birth' => trim((string) ($_POST['date_of_birth'] ?? '')) ?: null,
     'date_hired' => trim((string) ($_POST['date_hired'] ?? '')) ?: null,
     'sss_number' => trim((string) ($_POST['sss_number'] ?? '')) ?: null,
@@ -38,8 +39,8 @@ $data = [
     'emergency_contact_number' => trim((string) ($_POST['emergency_contact_number'] ?? '')) ?: null,
 ];
 
-if ($data['employee_no'] === '' || $data['first_name'] === '' || $data['last_name'] === '' || $data['position'] === '' || $data['department_id'] <= 0) {
-    flash('danger', 'Employee number, name, position, and department are required.');
+if ($data['employee_no'] === '' || $data['first_name'] === '' || $data['last_name'] === '' || $data['position'] === '' || $data['department_id'] <= 0 || !isset(ID_COMPANIES[$data['company_code']])) {
+    flash('danger', 'Employee number, name, position, department, and company are required.');
     redirect($id > 0 ? 'employee_form.php?id=' . $id : 'employee_form.php');
 }
 
@@ -52,6 +53,7 @@ try {
         $sql = 'UPDATE employees SET
             employee_no=:employee_no, first_name=:first_name, middle_name=:middle_name,
             last_name=:last_name, suffix=:suffix, position=:position, department_id=:department_id,
+            company_code=:company_code,
             date_of_birth=:date_of_birth, date_hired=:date_hired, sss_number=:sss_number,
             philhealth_number=:philhealth_number, tin_number=:tin_number, hdmf_number=:hdmf_number,
             emergency_contact_name=:emergency_contact_name, emergency_contact_address=:emergency_contact_address,
@@ -66,12 +68,12 @@ try {
         $message = 'Employee record updated.';
     } else {
         $sql = 'INSERT INTO employees
-            (employee_no, first_name, middle_name, last_name, suffix, position, department_id,
+            (employee_no, first_name, middle_name, last_name, suffix, position, department_id, company_code,
              date_of_birth, date_hired, sss_number, philhealth_number, tin_number, hdmf_number,
              emergency_contact_name, emergency_contact_address, emergency_contact_number,
              photo_path, signature_path, created_by, updated_by)
             VALUES
-            (:employee_no, :first_name, :middle_name, :last_name, :suffix, :position, :department_id,
+            (:employee_no, :first_name, :middle_name, :last_name, :suffix, :position, :department_id, :company_code,
              :date_of_birth, :date_hired, :sss_number, :philhealth_number, :tin_number, :hdmf_number,
              :emergency_contact_name, :emergency_contact_address, :emergency_contact_number,
              :photo_path, :signature_path, :created_by, :updated_by)';

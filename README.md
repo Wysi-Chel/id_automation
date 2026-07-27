@@ -9,6 +9,8 @@ A PHP/MySQL application for XAMPP that manages employee records and generates se
 - Seven departments: Accounting, Sales, Service, Information Technology, Human Resource, CNC, and BRP
 - Photo and signature uploads
 - Live SVG front/back ID preview
+- Company filters for MGSC, MKC, FUSO, and NGSC employee records
+- Selectable Mitsubishi General Santos, Mitsubishi Kidapawan, FUSO General Santos, and NTRprising/Hyundai General Santos ID templates
 - Draggable front-photo placement with size, zoom, and crop controls
 - Separate 600 × 960 PNG downloads for front and back, matching the supplied PSD
 - Separate front/back browser printing
@@ -18,6 +20,7 @@ A PHP/MySQL application for XAMPP that manages employee records and generates se
   - Employee edits, including before/after JSON snapshots
   - Employee status changes
   - Front/back ID downloads and printing
+- Pending/done workflow on Employee Records, including completion user and time
 - Dashboard totals and department summaries
 
 The project intentionally does **not** include a three-ID print sheet.
@@ -29,6 +32,17 @@ The exact front/back artwork extracted from the supplied Photoshop document is i
 origins, layer coordinates, dimensions, and type assignments. The MMC Office
 Regular, Medium, and Bold fonts used by the PSD are stored in `assets/fonts` and
 embedded into generated SVG/PNG output.
+
+The Kidapawan variant uses the supplied Kidapawan logo artwork and prints
+`Prk. Mangga` / `Brgy. Paco 115, Kidapawan City` as its company address.
+
+The FUSO variant is exported from the supplied layered `id fuso(remake).psd`.
+Its front and back artwork, FUSO logos, gradients, address, labels, and
+Photoshop coordinates are preserved while employee-specific fields remain live.
+
+The NGSC variant is exported from the supplied layered
+`ID MICEI HYUNDAI filtered(remake).psd`, including the Hyundai and NTRprising
+logos, original blue artwork, Hyundai fonts, information panel, and placements.
 
 ## Installation in XAMPP
 
@@ -47,6 +61,11 @@ embedded into generated SVG/PNG output.
 5. Open:
 
    `http://localhost/automated_id_maker/`
+
+For an existing installation, import `migrate_add_employee_done_status.sql` once
+in phpMyAdmin to enable the Employee Records completion workflow.
+Also import `migrate_add_employee_company_code.sql` once to enable MGSC, MKC,
+FUSO, and NGSC company assignment and filtering.
 
 ## Initial login
 

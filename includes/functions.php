@@ -66,6 +66,18 @@ function display_date(?string $value): string
     return $time ? date('m/d/Y', $time) : '—';
 }
 
+function company_label(?string $code): string
+{
+    $normalized = strtoupper(trim((string) $code));
+    return ID_COMPANIES[$normalized] ?? ($normalized ?: 'MGSC');
+}
+
+function template_key_for_company(?string $code): string
+{
+    $normalized = strtoupper(trim((string) $code));
+    return ID_COMPANY_TEMPLATES[$normalized] ?? ID_COMPANY_TEMPLATES['MGSC'];
+}
+
 function client_ip(): string
 {
     return substr($_SERVER['REMOTE_ADDR'] ?? 'unknown', 0, 45);
@@ -171,7 +183,7 @@ function employee_snapshot(array $employee): array
 {
     $keys = [
         'employee_no', 'first_name', 'middle_name', 'last_name', 'suffix', 'position',
-        'department_id', 'date_of_birth', 'date_hired', 'sss_number',
+        'department_id', 'company_code', 'date_of_birth', 'date_hired', 'sss_number',
         'philhealth_number', 'tin_number', 'hdmf_number', 'emergency_contact_name',
         'emergency_contact_address', 'emergency_contact_number', 'photo_path',
         'signature_path', 'status'

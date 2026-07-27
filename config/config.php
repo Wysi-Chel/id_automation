@@ -5,6 +5,18 @@ const APP_NAME = 'Automated Employee ID Maker';
 const COMPANY_NAME = 'MINDANAO INTEGRATED COMMERCIAL ENTERPRISES INCORPORATED';
 const COMPANY_ADDRESS = 'National Highway, Brgy. City Heights, General Santos City';
 const PRESIDENT_NAME = 'NEREO PLACIDO G. REGOLLO, JR.';
+const ID_COMPANIES = [
+    'MGSC' => 'Mitsubishi General Santos',
+    'MKC' => 'Mitsubishi Kidapawan',
+    'FUSO' => 'FUSO General Santos',
+    'NGSC' => 'NTRprising General Santos',
+];
+const ID_COMPANY_TEMPLATES = [
+    'MGSC' => 'general_santos',
+    'MKC' => 'kidapawan',
+    'FUSO' => 'fuso_general_santos',
+    'NGSC' => 'ntr_general_santos',
+];
 
 const DB_HOST = '127.0.0.1';
 const DB_PORT = '3306';

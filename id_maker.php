@@ -25,6 +25,8 @@ $data = [
     'name' => strtoupper(full_name($employee)),
     'position' => $employee['position'],
     'department' => $employee['department_name'],
+    'companyCode' => $employee['company_code'] ?? 'MGSC',
+    'templateKey' => template_key_for_company($employee['company_code'] ?? 'MGSC'),
     'dob' => display_date($employee['date_of_birth']),
     'dateHired' => display_date($employee['date_hired']),
     'sss' => $employee['sss_number'] ?: '—',
@@ -41,10 +43,44 @@ $data = [
     'signature' => $signatureData,
 ];
 $templateAssets = [
-    'frontTemplate' => $localAssetDataUri('assets/id-template/front-template.png', 'image/png'),
-    'backTemplate' => $localAssetDataUri('assets/id-template/back-template.png', 'image/png'),
+    'templates' => [
+        'general_santos' => [
+            'label' => 'General Santos',
+            'layout' => 'mitsubishi',
+            'front' => $localAssetDataUri('assets/id-template/front-template.png', 'image/png'),
+            'back' => $localAssetDataUri('assets/id-template/back-template.png', 'image/png'),
+        ],
+        'kidapawan' => [
+            'label' => 'Kidapawan',
+            'layout' => 'mitsubishi',
+            'front' => $localAssetDataUri('assets/id-template/front-template-kidapawan.png', 'image/png'),
+            'back' => $localAssetDataUri('assets/id-template/back-template-kidapawan.png', 'image/png'),
+            'companyAddress' => [
+                'Prk. Mangga',
+                'Brgy. Paco 115, Kidapawan City',
+            ],
+        ],
+        'fuso_general_santos' => [
+            'label' => 'FUSO General Santos',
+            'layout' => 'fuso',
+            'front' => $localAssetDataUri('assets/id-template/front-template-fuso.png', 'image/png'),
+            'frontOverlay' => $localAssetDataUri('assets/id-template/front-overlay-fuso.png', 'image/png'),
+            'back' => $localAssetDataUri('assets/id-template/back-template-fuso.png', 'image/png'),
+        ],
+        'ntr_general_santos' => [
+            'label' => 'NTRprising General Santos',
+            'layout' => 'ntr',
+            'front' => $localAssetDataUri('assets/id-template/front-template-ntr.png', 'image/png'),
+            'back' => $localAssetDataUri('assets/id-template/back-template-ntr.png', 'image/png'),
+        ],
+    ],
+    'fontRegular' => $localAssetDataUri('assets/fonts/MMCOFFICE-Regular.ttf', 'font/ttf'),
     'fontMedium' => $localAssetDataUri('assets/fonts/MMCOFFICE-Medium.ttf', 'font/ttf'),
     'fontBold' => $localAssetDataUri('assets/fonts/MMCOFFICE-Bold.ttf', 'font/ttf'),
+    'hyundaiRegular' => $localAssetDataUri('assets/fonts/HyundaiSansHeadOffice-Regular.ttf', 'font/ttf'),
+    'hyundaiBold' => $localAssetDataUri('assets/fonts/HyundaiSansHeadOffice-Bold.ttf', 'font/ttf'),
+    'hyundaiTextMedium' => $localAssetDataUri('assets/fonts/HyundaiSansTextOffice-Medium.ttf', 'font/ttf'),
+    'lucidaSansUnicode' => $localAssetDataUri('assets/fonts/LucidaSansUnicode.ttf', 'font/ttf'),
 ];
 $pageTitle = 'Generate Employee ID';
 $pageSubtitle = full_name($employee) . ' · Separate front and back outputs';
@@ -62,8 +98,19 @@ require __DIR__ . '/includes/header.php';
                 <dt>Employee</dt><dd><?= e(full_name($employee)) ?></dd>
                 <dt style="margin-top:14px">Employee number</dt><dd><?= e($employee['employee_no']) ?></dd>
                 <dt style="margin-top:14px">Department</dt><dd><?= e($employee['department_name']) ?></dd>
+                <dt style="margin-top:14px">Company</dt><dd><?= e(($employee['company_code'] ?? 'MGSC') . ' — ' . company_label($employee['company_code'] ?? 'MGSC')) ?></dd>
                 <dt style="margin-top:14px">Output size</dt><dd>600 × 960 pixels per side</dd>
             </dl>
+            <div class="form-group id-template-selector">
+                <label for="idTemplate">ID template</label>
+                <select id="idTemplate" data-id-template>
+                    <option value="general_santos">Mitsubishi General Santos</option>
+                    <option value="kidapawan">Mitsubishi Kidapawan</option>
+                    <option value="fuso_general_santos">FUSO General Santos</option>
+                    <option value="ntr_general_santos">NTRprising General Santos</option>
+                </select>
+                <span class="help">Defaults from the employee’s company. A change here applies to this output only.</span>
+            </div>
             <div class="photo-placement-editor" id="photoPlacementEditor">
                 <div class="photo-placement-heading">
                     <div>
@@ -82,7 +129,7 @@ require __DIR__ . '/includes/header.php';
                 </label>
                 <label class="photo-range">
                     <span>Picture size <output data-photo-output="size"></output></span>
-                    <input type="range" min="180" max="420" step="1" value="305" data-photo-control="size">
+                    <input type="range" min="180" max="560" step="1" value="305" data-photo-control="size">
                 </label>
                 <label class="photo-range">
                     <span>Crop zoom <output data-photo-output="zoom"></output></span>

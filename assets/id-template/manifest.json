@@ -21,6 +21,58 @@
       }
     }
   },
+  "fusoSource": {
+    "file": "id fuso(remake).psd",
+    "sha256": "1F3D71F863DDD4C8D4F3DC310C61FE62B97D2E3F3E0185DD122732BAA796A432",
+    "documentSize": {
+      "width": 3570,
+      "height": 2370
+    },
+    "frontGroup": {
+      "name": "Front",
+      "crop": {
+        "left": 48,
+        "top": 63,
+        "right": 696,
+        "bottom": 1105
+      }
+    },
+    "backGroup": {
+      "name": "Back",
+      "crop": {
+        "left": 62,
+        "top": 1184,
+        "right": 709,
+        "bottom": 2225
+      }
+    }
+  },
+  "ntrSource": {
+    "file": "ID MICEI HYUNDAI filtered(remake).psd",
+    "sha256": "7166448B3F73D36CA824AA950C4EF60D3EA7FFB78C56EAC987EF8F0B48708458",
+    "documentSize": {
+      "width": 3570,
+      "height": 2370
+    },
+    "frontGroup": {
+      "name": "HYUNDAI/F-1",
+      "crop": {
+        "left": 130,
+        "top": 133,
+        "right": 731,
+        "bottom": 1123
+      }
+    },
+    "backGroup": {
+      "name": "HYUNDAI/B-5",
+      "crop": {
+        "left": 130,
+        "top": 1302,
+        "right": 732,
+        "bottom": 2295
+      }
+    }
+  },
   "cardSize": {
     "width": 600,
     "height": 960
@@ -28,14 +80,57 @@
   "fonts": {
     "medium": "../fonts/MMCOFFICE-Medium.ttf",
     "bold": "../fonts/MMCOFFICE-Bold.ttf",
-    "regular": "../fonts/MMCOFFICE-Regular.ttf"
+    "regular": "../fonts/MMCOFFICE-Regular.ttf",
+    "hyundaiHeadOfficeRegular": "../fonts/HyundaiSansHeadOffice-Regular.ttf",
+    "hyundaiHeadOfficeBold": "../fonts/HyundaiSansHeadOffice-Bold.ttf",
+    "hyundaiTextOfficeMedium": "../fonts/HyundaiSansTextOffice-Medium.ttf",
+    "lucidaSansUnicode": "../fonts/LucidaSansUnicode.ttf"
   },
   "templates": {
     "front": "front-template.png",
     "back": "back-template.png",
     "frontBackgroundLayer": "front-background.png",
     "frontWatermarkLayer": "front-watermark-overlay.png",
-    "backBackgroundLayer": "back-background.png"
+    "backBackgroundLayer": "back-background.png",
+    "variants": {
+      "generalSantos": {
+        "front": "front-template.png",
+        "back": "back-template.png"
+      },
+      "kidapawan": {
+        "front": "front-template-kidapawan.png",
+        "back": "back-template-kidapawan.png",
+        "logoSource": "kidapawan-logo-source.jpg",
+        "logoSourceSha256": "990CACBB14162F01FF63C71CD2A75175EEDD92B41B896348B069CC85D2D4D2F2",
+        "companyAddress": [
+          "Prk. Mangga",
+          "Brgy. Paco 115, Kidapawan City"
+        ]
+      },
+      "fusoGeneralSantos": {
+        "front": "front-template-fuso.png",
+        "frontSha256": "95F801DECC9FA7CFB61E450EBD976719EC23BB1AE88EC6B29E589B954D882D5C",
+        "frontOverlay": "front-overlay-fuso.png",
+        "frontOverlaySha256": "C23258FD1C1250D9EE3DA25E82360AB566A819E597200CF9791E13642E1447DA",
+        "back": "back-template-fuso.png",
+        "backSha256": "9F02CAF35633F58ECE2778F49D87CA1584747C28C9D9825F9550772309425730",
+        "source": "id fuso(remake).psd",
+        "layout": "fuso",
+        "companyAddress": [
+          "Pan-Philippine Highway",
+          "Brgy. Silway 7, Polomolok, South Cotabato"
+        ]
+      },
+      "ntrGeneralSantos": {
+        "front": "front-template-ntr.png",
+        "frontSha256": "183E1651D403782928966E13B234D439E3F6314EA1216FDD284E804AFAA387D8",
+        "back": "back-template-ntr.png",
+        "backSha256": "8287D9D68B513E80B577D48C454497851B2F0F812B45ABAEE536B5C062B3454B",
+        "source": "ID MICEI HYUNDAI filtered(remake).psd",
+        "layout": "ntr",
+        "companyCode": "NGSC"
+      }
+    }
   },
   "frontPlacements": {
     "photo": {
@@ -90,6 +185,12 @@
     }
   },
   "backPlacements": {
+    "kidapawanCompanyAddress": {
+      "centerX": 300,
+      "firstBaseline": 522,
+      "secondBaseline": 552,
+      "fontSize": 24.166
+    },
     "emergencyName": {
       "centerX": 301.15,
       "baseline": 299.61,
@@ -123,6 +224,142 @@
       "lineHeight": 30.25,
       "font": "bold",
       "fontSize": 25.083
+    }
+  },
+  "fusoPlacements": {
+    "front": {
+      "photoDefault": {
+        "x": 40,
+        "y": 75,
+        "size": 560
+      },
+      "photoFit": "contain-bottom",
+      "photoZoom": 1,
+      "department": {
+        "translateX": 53.4,
+        "translateY": 566.9,
+        "rotationDegrees": -90,
+        "font": "medium",
+        "fontSize": 54.3
+      },
+      "name": {
+        "x": 30.3,
+        "baseline": 732.6,
+        "font": "bold",
+        "fontSize": 39
+      },
+      "position": {
+        "x": 30.3,
+        "baseline": 768.7,
+        "font": "regular",
+        "fontSize": 32.4
+      },
+      "employeeNumber": {
+        "translateX": 557.3,
+        "translateY": 906.5,
+        "rotationDegrees": -90,
+        "font": "medium",
+        "fontSize": 25.6
+      }
+    },
+    "back": {
+      "emergencyName": {
+        "centerX": 301.5,
+        "baseline": 271.5,
+        "font": "medium",
+        "fontSize": 32
+      },
+      "emergencyAddress": {
+        "centerX": 301.5,
+        "firstBaseline": 303,
+        "lineHeight": 21,
+        "font": "medium",
+        "fontSize": 18.7
+      },
+      "signature": {
+        "x": 248,
+        "y": 420,
+        "width": 165,
+        "height": 145
+      },
+      "employeeName": {
+        "centerX": 309.3,
+        "baseline": 574.5,
+        "font": "medium",
+        "fontSize": 36
+      },
+      "dateOfBirth": {
+        "x": 83.2,
+        "baseline": 652,
+        "font": "bold",
+        "fontSize": 23
+      },
+      "dateHired": {
+        "x": 400.3,
+        "baseline": 652,
+        "font": "bold",
+        "fontSize": 23
+      },
+      "governmentNumbers": {
+        "rightX": 533.4,
+        "firstBaseline": 705.6,
+        "lineHeight": 29.2,
+        "font": "bold",
+        "fontSize": 24.2
+      }
+    }
+  },
+  "ntrPlacements": {
+    "front": {
+      "photoDefault": {
+        "x": 114,
+        "y": 294,
+        "size": 276
+      },
+      "department": {
+        "translateX": 70,
+        "translateY": 901,
+        "rotationDegrees": -90,
+        "font": "hyundaiHeadOfficeBold",
+        "fontSize": 60
+      },
+      "employeeNumber": {
+        "centerX": 499,
+        "baseline": 558.5,
+        "font": "hyundaiTextOfficeMedium",
+        "fontSize": 26.8
+      },
+      "name": {
+        "centerX": 341,
+        "baseline": 638,
+        "font": "lucidaSansUnicode",
+        "fontSize": 35.4
+      },
+      "position": {
+        "centerX": 337,
+        "baseline": 672,
+        "font": "hyundaiHeadOfficeRegular",
+        "fontSize": 33
+      },
+      "signature": {
+        "x": 230,
+        "y": 795,
+        "width": 220,
+        "height": 85
+      }
+    },
+    "back": {
+      "datesRightX": 561,
+      "dateOfBirthBaseline": 423,
+      "dateHiredBaseline": 465,
+      "governmentNumbersRightX": 561,
+      "governmentNumbersFirstBaseline": 512.5,
+      "governmentNumbersLineHeight": 35.1,
+      "emergencyNameCenterX": 336.5,
+      "emergencyNameBaseline": 694,
+      "emergencyAddressCenterX": 331,
+      "emergencyAddressFirstBaseline": 728,
+      "emergencyNumberBaseline": 781
     }
   }
 }

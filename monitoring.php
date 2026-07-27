@@ -7,6 +7,7 @@ $action = trim((string)($_GET['action'] ?? ''));
 $department = (int)($_GET['department'] ?? 0);
 $dateFrom = trim((string)($_GET['date_from'] ?? ''));
 $dateTo = trim((string)($_GET['date_to'] ?? ''));
+$status = trim((string)($_GET['status'] ?? ''));
 $q = trim((string)($_GET['q'] ?? ''));
 $page=max(1,(int)($_GET['page']??1)); $perPage=20; $offset=($page-1)*$perPage;
 $where=[]; $params=[];
@@ -14,6 +15,11 @@ if ($action !== '') { $where[]='a.action_type=:action'; $params[':action']=$acti
 if ($department > 0) { $where[]='e.department_id=:department'; $params[':department']=$department; }
 if ($dateFrom !== '') { $where[]='DATE(a.created_at)>=:date_from'; $params[':date_from']=$dateFrom; }
 if ($dateTo !== '') { $where[]='DATE(a.created_at)<=:date_to'; $params[':date_to']=$dateTo; }
+if ($status === 'pending') {
+    $where[] = 'a.is_done = 0';
+} elseif ($status === 'done') {
+    $where[] = 'a.is_done = 1';
+}
 if ($q !== '') { $where[]='(a.action_description LIKE :q OR e.employee_no LIKE :q OR e.first_name LIKE :q OR e.last_name LIKE :q OR u.full_name LIKE :q)'; $params[':q']='%'.$q.'%'; }
 $whereSql=$where?'WHERE '.implode(' AND ',$where):'';
 $base="FROM audit_logs a LEFT JOIN users u ON u.id=a.user_id LEFT JOIN employees e ON e.id=a.employee_id LEFT JOIN departments d ON d.id=e.department_id $whereSql";

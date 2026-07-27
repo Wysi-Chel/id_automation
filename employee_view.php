@@ -30,6 +30,7 @@ require __DIR__ . '/includes/header.php';
         </div>
         <dl class="detail-grid">
             <div class="detail"><dt>Employee number</dt><dd><?= e($employee['employee_no']) ?></dd></div>
+            <div class="detail"><dt>Company</dt><dd><?= e(($employee['company_code'] ?? 'MGSC') . ' — ' . company_label($employee['company_code'] ?? 'MGSC')) ?></dd></div>
             <div class="detail"><dt>Date hired</dt><dd><?= e(display_date($employee['date_hired'])) ?></dd></div>
             <div class="detail"><dt>Date of birth</dt><dd><?= e(display_date($employee['date_of_birth'])) ?></dd></div>
             <div class="detail"><dt>SSS</dt><dd><?= e(mask_number($employee['sss_number'])) ?></dd></div>

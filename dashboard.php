@@ -40,6 +40,7 @@ $recentLogs = $pdo->query(
             CONCAT_WS(' ', e.first_name, e.middle_name, e.last_name, e.suffix) AS employee_name
      FROM audit_logs a
      LEFT JOIN users u ON u.id = a.user_id
+     LEFT JOIN users du ON du.id = a.done_by
      LEFT JOIN employees e ON e.id = a.employee_id
      ORDER BY a.created_at DESC LIMIT 8"
 )->fetchAll();
