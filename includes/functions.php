@@ -6,6 +6,27 @@ function e(?string $value): string
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 }
 
+function button_icon(string $name): string
+{
+    $content = match ($name) {
+        'plus' => '<path d="M5 12h14"/><path d="M12 5v14"/>',
+        'filter' => '<path d="M22 3H2l8 9.46V19l4 2v-8.54z"/>',
+        'eye' => '<path d="M2.06 12.35a1 1 0 0 1 0-.7 10.75 10.75 0 0 1 19.88 0 1 1 0 0 1 0 .7 10.75 10.75 0 0 1-19.88 0"/><circle cx="12" cy="12" r="3"/>',
+        'pencil' => '<path d="M21.17 6.81a1 1 0 0 0-3.98-3.98L3.84 16.17a2 2 0 0 0-.5.83l-1.32 4.36a.5.5 0 0 0 .62.62L7 20.66a2 2 0 0 0 .83-.5z"/><path d="m15 5 4 4"/>',
+        'id-card' => '<rect width="20" height="14" x="2" y="5" rx="2"/><path d="M16 10h2"/><path d="M16 14h2"/><path d="M6.17 15a3 3 0 0 1 5.66 0"/><circle cx="9" cy="11" r="2"/>',
+        'rotate-ccw' => '<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>',
+        'send' => '<path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/>',
+        'circle-check' => '<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>',
+        default => '',
+    };
+
+    if ($content === '') {
+        return '';
+    }
+
+    return '<svg class="btn-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' . $content . '</svg>';
+}
+
 function redirect(string $path): never
 {
     header('Location: ' . $path);
@@ -64,6 +85,15 @@ function display_date(?string $value): string
     }
     $time = strtotime($value);
     return $time ? date('m/d/Y', $time) : '—';
+}
+
+function display_datetime(?string $value): string
+{
+    if (!$value) {
+        return 'Not recorded';
+    }
+    $time = strtotime($value);
+    return $time ? date('M d, Y h:i A', $time) : 'Not recorded';
 }
 
 function company_label(?string $code): string

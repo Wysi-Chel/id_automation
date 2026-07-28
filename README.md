@@ -64,6 +64,8 @@ logos, original blue artwork, Hyundai fonts, information panel, and placements.
 
 For an existing installation, import `migrate_add_employee_done_status.sql` once
 in phpMyAdmin to enable the Employee Records completion workflow.
+Import `migrate_add_employee_released_status.sql` once to add release tracking
+after an employee ID is completed.
 Also import `migrate_add_employee_company_code.sql` once to enable MGSC, MKC,
 FUSO, and NGSC company assignment and filtering.
 

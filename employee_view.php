@@ -4,10 +4,30 @@ require_once __DIR__ . '/includes/auth.php';
 require_auth();
 $pdo = db();
 $id = (int) ($_GET['id'] ?? 0);
-$stmt = $pdo->prepare('SELECT e.*, d.name AS department_name FROM employees e JOIN departments d ON d.id=e.department_id WHERE e.id=?');
+$stmt = $pdo->prepare(
+    'SELECT e.*, d.name AS department_name,
+            du.full_name AS id_done_by_name,
+            ru.full_name AS id_released_by_name
+     FROM employees e
+     JOIN departments d ON d.id = e.department_id
+     LEFT JOIN users du ON du.id = e.id_done_by
+     LEFT JOIN users ru ON ru.id = e.id_released_by
+     WHERE e.id = ?'
+);
 $stmt->execute([$id]);
 $employee = $stmt->fetch();
 if (!$employee) { http_response_code(404); exit('Employee record not found.'); }
+
+$idWorkflowStatus = 'Pending';
+$idWorkflowBadge = 'badge-pending';
+if ((int) ($employee['id_is_released'] ?? 0) === 1) {
+    $idWorkflowStatus = 'Released';
+    $idWorkflowBadge = 'badge-released';
+} elseif ((int) ($employee['id_is_done'] ?? 0) === 1) {
+    $idWorkflowStatus = 'Done';
+    $idWorkflowBadge = 'badge-done';
+}
+
 $pageTitle = full_name($employee);
 $pageSubtitle = $employee['employee_no'] . ' · ' . $employee['department_name'];
 require __DIR__ . '/includes/header.php';
@@ -21,6 +41,29 @@ require __DIR__ . '/includes/header.php';
         <button class="btn <?= $employee['status'] === 'Active' ? 'btn-danger' : 'btn-secondary' ?>" type="submit"><?= $employee['status'] === 'Active' ? 'Mark inactive' : 'Restore as active' ?></button>
     </form>
 </div>
+<section class="card mb-18">
+    <div class="card-header">
+        <h2>ID creation status</h2>
+        <span class="badge <?= e($idWorkflowBadge) ?>"><?= e($idWorkflowStatus) ?></span>
+    </div>
+    <div class="card-body">
+        <?php if ($idWorkflowStatus === 'Pending'): ?>
+            <div class="id-status-message">
+                <?= button_icon('id-card') ?>
+                <div><strong>Pending creation</strong><span>The employee ID has not been marked as done.</span></div>
+            </div>
+        <?php else: ?>
+            <dl class="detail-grid">
+                <div class="detail"><dt>Completed by</dt><dd><?= e($employee['id_done_by_name'] ?? 'User') ?></dd></div>
+                <div class="detail"><dt>Completed at</dt><dd><?= e(display_datetime($employee['id_done_at'])) ?></dd></div>
+                <?php if ($idWorkflowStatus === 'Released'): ?>
+                    <div class="detail"><dt>Released by</dt><dd><?= e($employee['id_released_by_name'] ?? 'User') ?></dd></div>
+                    <div class="detail"><dt>Released at</dt><dd><?= e(display_datetime($employee['id_released_at'])) ?></dd></div>
+                <?php endif; ?>
+            </dl>
+        <?php endif; ?>
+    </div>
+</section>
 <section class="card mb-18">
     <div class="card-header"><h2>Employment profile</h2><span class="badge badge-<?= strtolower($employee['status']) ?>"><?= e($employee['status']) ?></span></div>
     <div class="card-body">

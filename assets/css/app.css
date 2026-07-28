@@ -51,8 +51,12 @@ a { color: inherit; }
 .btn-primary { background: var(--red); color: white; }
 .btn-primary:hover { background: var(--red-dark); }
 .btn-secondary { background: white; border-color: var(--line); color: var(--ink); }
+.btn-release { background: #2563eb; border-color: #2563eb; color: white; box-shadow: 0 8px 18px rgba(37,99,235,.2); }
+.btn-release:hover { background: #1d4ed8; border-color: #1d4ed8; }
 .btn-danger { background: #fff1f2; border-color: #fecdd3; color: var(--danger); }
 .btn-sm { min-height: 32px; padding: 6px 10px; font-size: 12px; }
+.btn-icon { width: 16px; height: 16px; flex: 0 0 16px; }
+.btn-sm .btn-icon { width: 14px; height: 14px; flex-basis: 14px; }
 form { margin: 0; }
 .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
 .form-group { display: grid; gap: 7px; }
@@ -74,6 +78,7 @@ tr:last-child td { border-bottom: 0; }
 .badge-inactive { background: #fee2e2; color: #991b1b; }
 .badge-action { background: #eff6ff; color: #1d4ed8; }
 .badge-done { background: #d1fae5; color: #065f46; }
+.badge-released { background: #dbeafe; color: #1e40af; }
 .badge-pending { background: #fef3c7; color: #92400e; }
 .status-detail { display: block; margin-top: 6px; color: var(--muted); white-space: nowrap; }
 .avatar { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; background: #e5e7eb; border: 1px solid var(--line); }
@@ -90,6 +95,10 @@ tr:last-child td { border-bottom: 0; }
 .detail-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px 24px; }
 .detail dt { color: var(--muted); font-size: 12px; margin-bottom: 4px; }
 .detail dd { margin: 0; font-weight: 600; word-break: break-word; }
+.id-status-message { display: flex; align-items: center; gap: 12px; color: #92400e; }
+.id-status-message > .btn-icon { width: 22px; height: 22px; flex-basis: 22px; }
+.id-status-message strong, .id-status-message span { display: block; }
+.id-status-message span { margin-top: 3px; color: var(--muted); font-size: 13px; }
 .section-title { margin: 0 0 15px; font-size: 16px; }
 .mt-18 { margin-top: 18px; }
 .mb-18 { margin-bottom: 18px; }

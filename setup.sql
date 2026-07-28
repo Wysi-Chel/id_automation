@@ -43,6 +43,9 @@ CREATE TABLE employees (
     id_is_done TINYINT(1) NOT NULL DEFAULT 0,
     id_done_by INT UNSIGNED NULL,
     id_done_at DATETIME NULL,
+    id_is_released TINYINT(1) NOT NULL DEFAULT 0,
+    id_released_by INT UNSIGNED NULL,
+    id_released_at DATETIME NULL,
     status ENUM('Active','Inactive') NOT NULL DEFAULT 'Active',
     created_by INT UNSIGNED NULL,
     updated_by INT UNSIGNED NULL,
@@ -52,10 +55,12 @@ CREATE TABLE employees (
     CONSTRAINT fk_employee_created_by FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL,
     CONSTRAINT fk_employee_updated_by FOREIGN KEY (updated_by) REFERENCES users(id) ON DELETE SET NULL,
     CONSTRAINT fk_employee_id_done_by FOREIGN KEY (id_done_by) REFERENCES users(id) ON DELETE SET NULL,
+    CONSTRAINT fk_employee_id_released_by FOREIGN KEY (id_released_by) REFERENCES users(id) ON DELETE SET NULL,
     INDEX idx_employee_department (department_id),
     INDEX idx_employee_company_code (company_code),
     INDEX idx_employee_status (status),
     INDEX idx_employee_id_done (id_is_done),
+    INDEX idx_employee_id_released (id_is_released),
     INDEX idx_employee_name (last_name, first_name)
 ) ENGINE=InnoDB;
 
