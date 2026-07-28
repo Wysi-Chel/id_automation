@@ -50,8 +50,14 @@ $pageSubtitle = 'Overview of employee records and recent system activity.';
 require __DIR__ . '/includes/header.php';
 ?>
 <div class="grid grid-2 mb-18">
-    <div class="card stat"><div class="label">Total employee records</div><div class="value"><?= (int) ($stats['total'] ?? 0) ?></div><div class="hint"><?= (int) ($stats['active_count'] ?? 0) ?> active</div></div>
-    <div class="card stat"><div class="label">Inactive records</div><div class="value"><?= (int) ($stats['inactive_count'] ?? 0) ?></div><div class="hint">Retained for record history</div></div>
+    <div class="card stat">
+        <span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M16 10h2M16 14h2"/><circle cx="9" cy="10.5" r="2"/><path d="M5.5 16a3.7 3.7 0 0 1 7 0"/></svg></span>
+        <div><div class="label">Total employee records</div><div class="value"><?= (int) ($stats['total'] ?? 0) ?></div><div class="hint"><?= (int) ($stats['active_count'] ?? 0) ?> active</div></div>
+    </div>
+    <div class="card stat stat-amber">
+        <span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+        <div><div class="label">Inactive records</div><div class="value"><?= (int) ($stats['inactive_count'] ?? 0) ?></div><div class="hint">Retained for record history</div></div>
+    </div>
 </div>
 
 

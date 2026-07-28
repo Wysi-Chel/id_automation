@@ -1,4 +1,8 @@
 <?php if (current_user()): ?>
+    <footer class="app-footer">
+        <span><?= e(APP_NAME) ?></span>
+        <span>MICEI Information Technology Department</span>
+    </footer>
     </main>
 </div>
 <?php else: ?>

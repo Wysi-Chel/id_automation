@@ -33,10 +33,10 @@ $pageTitle='Record Monitoring'; $pageSubtitle='Audit trail for employee records,
 require __DIR__.'/includes/header.php';
 ?>
 <div class="grid grid-4 mb-18">
- <div class="card stat"><div class="label">All monitored events</div><div class="value"><?= (int)($summary['all_logs']??0) ?></div></div>
- <div class="card stat"><div class="label">Events today</div><div class="value"><?= (int)($summary['today_logs']??0) ?></div></div>
- <div class="card stat"><div class="label">ID output events</div><div class="value"><?= (int)($summary['id_logs']??0) ?></div></div>
- <div class="card stat"><div class="label">Employee record changes</div><div class="value"><?= (int)($summary['record_changes']??0) ?></div></div>
+ <div class="card stat"><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 12h4l2-6 4 12 2-6h6"/><path d="M4 4h16v16H4z"/></svg></span><div><div class="label">All monitored events</div><div class="value"><?= (int)($summary['all_logs']??0) ?></div></div></div>
+ <div class="card stat stat-blue"><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><div class="label">Events today</div><div class="value"><?= (int)($summary['today_logs']??0) ?></div></div></div>
+ <div class="card stat stat-green"><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M16 10h2M16 14h2"/><circle cx="9" cy="10.5" r="2"/></svg></span><div><div class="label">ID output events</div><div class="value"><?= (int)($summary['id_logs']??0) ?></div></div></div>
+ <div class="card stat stat-amber"><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h16"/><path d="m7 15 4-4 3 2 5-6"/></svg></span><div><div class="label">Employee record changes</div><div class="value"><?= (int)($summary['record_changes']??0) ?></div></div></div>
 </div>
 <div class="card mb-18"><div class="card-body"><form class="filters" method="get">
  <div class="form-group"><label>Search activity</label><input name="q" value="<?= e($q) ?>" placeholder="Employee, user, or description"></div>

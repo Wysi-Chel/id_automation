@@ -34,7 +34,7 @@ $flashes = pull_flashes();
     <?php endforeach; ?>
 
     <section class="system-launcher-grid" aria-label="Available monitoring systems">
-        <a class="system-tile system-tile-mint" href="/automated_id_maker/dashboard.php">
+        <a class="system-tile system-tile-mint" href="/micei_mis/dashboard.php">
             <span class="system-tile-top">
                 <span class="system-tile-icon" aria-hidden="true">
                     <svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M8 9h8M8 13h5"/></svg>
@@ -46,16 +46,16 @@ $flashes = pull_flashes();
             <span class="system-tile-switch"><i></i><b>Open</b></span>
         </a>
 
-        <a class="system-tile system-tile-coral" href="/equipment_repair_monitoring/">
+        <a class="system-tile system-tile-coral" href="/e-repair_system/">
             <span class="system-tile-top">
                 <span class="system-tile-icon" aria-hidden="true">
                     <svg viewBox="0 0 24 24"><path d="m14.7 6.3 3-3a4.5 4.5 0 0 1-5.8 5.8l-6.6 6.6a2.1 2.1 0 0 0 3 3l6.6-6.6a4.5 4.5 0 0 0 5.8-5.8l-3 3z"/></svg>
                 </span>
-                <span class="system-tile-state">Off</span>
+                <span class="system-tile-state">On</span>
             </span>
             <strong>Equipment Repair Monitoring</strong>
             <small>Repair requests, equipment status, and service history.</small>
-            <span class="system-tile-switch is-off"><i></i><b>Setup</b></span>
+            <span class="system-tile-switch"><i></i><b>Open</b></span>
         </a>
 
         <a class="system-tile system-tile-indigo" href="/training_monitoring/">
