@@ -51,5 +51,6 @@ require __DIR__ . '/includes/header.php';
         </div>
         <button class="btn btn-primary" type="submit">Sign in</button>
     </form>
+    <a class="public-forms-login-link" href="public_requests.php">Open public request forms →</a>
 </div>
 <?php require __DIR__ . '/includes/footer.php'; ?>

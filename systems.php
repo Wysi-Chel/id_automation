@@ -14,7 +14,9 @@ $flashes = pull_flashes();
     <title>System Launcher · MICEI Portal</title>
     <link rel="icon" type="image/png" sizes="145x145" href="assets/img/favicon.png">
     <meta name="theme-color" content="#f4f5f7">
+    <script src="assets/js/theme-init.js"></script>
     <link rel="stylesheet" href="assets/css/app.css">
+    <script src="assets/js/theme.js" defer></script>
 </head>
 <body class="system-hub-body">
 <div class="system-hub-backdrop" aria-hidden="true">
@@ -33,6 +35,15 @@ $flashes = pull_flashes();
             </span>
         </a>
         <div class="system-hub-account">
+            <a class="system-hub-public-link" href="public_requests.php">
+                <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                <span>Public forms</span>
+            </a>
+            <button class="micei-theme-toggle compact" type="button" data-theme-toggle aria-pressed="false">
+                <svg class="theme-icon theme-icon-sun" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+                <svg class="theme-icon theme-icon-moon" aria-hidden="true" viewBox="0 0 24 24"><path d="M20.5 15.4A9 9 0 0 1 8.6 3.5 9 9 0 1 0 20.5 15.4Z"/></svg>
+                <span data-theme-label>Dark mode</span>
+            </button>
             <span class="system-hub-account-copy">
                 <small>Signed in as</small>
                 <strong><?= e($user['full_name'] ?? 'System user') ?></strong>
@@ -108,6 +119,27 @@ $flashes = pull_flashes();
             </span>
         </a>
 
+        <a class="system-tile system-tile-blue" href="/inkmonitoring/">
+            <span class="system-tile-top">
+                <span class="system-tile-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2.5s7 7.3 7 12.5a7 7 0 0 1-14 0c0-5.2 7-12.5 7-12.5Z"/>
+                        <path d="M9 17.5c.7 1 1.7 1.5 3 1.5"/>
+                    </svg>
+                </span>
+                <span class="system-tile-state"><i aria-hidden="true"></i> Available</span>
+            </span>
+            <span class="system-tile-copy">
+                <strong>Ink Monitoring</strong>
+                <small>Track printer ink requests, requisition slips, ink-level evidence, and issuance status.</small>
+            </span>
+            <span class="system-tile-footer">
+                <span class="system-tile-arrow" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </span>
+            </span>
+        </a>
+
         <a class="system-tile system-tile-indigo" href="/training_monitoring/">
             <span class="system-tile-top">
                 <span class="system-tile-icon" aria-hidden="true">
@@ -130,7 +162,7 @@ $flashes = pull_flashes();
             </span>
         </a>
 
-        <a class="system-tile system-tile-blue" href="/system_monitoring/">
+        <a class="system-tile system-tile-blue" href="/system_monitoring/index.php">
             <span class="system-tile-top">
                 <span class="system-tile-icon" aria-hidden="true">
                     <svg viewBox="0 0 24 24">

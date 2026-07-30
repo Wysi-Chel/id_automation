@@ -5,6 +5,9 @@ A PHP/MySQL application for XAMPP that manages employee records and generates se
 ## Included
 
 - Secure administrator login
+- Public request hub for employee ID and printer ink requests
+- Public employee ID intake with photo, signature, validation, and tracking reference
+- Staff ID-request review queue with one-step conversion to an employee record
 - Employee create, edit, view, search, and active/inactive status
 - Seven departments: Accounting, Sales, Service, Information Technology, Human Resource, CNC, and BRP
 - Photo and signature uploads
@@ -86,3 +89,13 @@ Change this password before production use by replacing the password hash in the
 ## Data and privacy
 
 The database contains government identification numbers, birth dates, and emergency-contact information. Use HTTPS on a live server, restrict access to authorized staff, and include the database and upload folders in your backup plan.
+
+## Public request links
+
+- Request hub: `http://localhost/micei_mis/public_requests.php`
+- Employee ID form: `http://localhost/micei_mis/public_id_request.php`
+- Printer ink form: `http://localhost/inkmonitoring/public_request.php`
+
+The URLs above are local XAMPP addresses. To share the forms outside the local
+network, publish them behind an HTTPS-enabled hostname and keep the staff portal
+and uploaded personal data protected.

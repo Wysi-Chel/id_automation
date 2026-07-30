@@ -14,7 +14,9 @@ $currentPage = basename($_SERVER['PHP_SELF'] ?? '');
     <title><?= e($pageTitle) ?> · <?= e(APP_NAME) ?></title>
     <link rel="icon" type="image/png" sizes="145x145" href="assets/img/favicon.png">
     <meta name="theme-color" content="#bf1f2f">
+    <script src="assets/js/theme-init.js"></script>
     <link rel="stylesheet" href="assets/css/app.css">
+    <script src="assets/js/theme.js" defer></script>
     <script src="assets/js/app.js" defer></script>
 </head>
 <body>
@@ -34,6 +36,10 @@ $currentPage = basename($_SERVER['PHP_SELF'] ?? '');
                 <svg aria-hidden="true" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M16 10h2M16 14h2"/><circle cx="9" cy="10.5" r="2"/><path d="M5.5 16a3.7 3.7 0 0 1 7 0"/></svg>
                 Employee IDs
             </a>
+            <a class="<?= in_array($currentPage, ['id_requests.php','id_request_view.php'], true) ? 'active' : '' ?>" href="id_requests.php">
+                <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h6"/></svg>
+                ID Requests
+            </a>
         </nav>
         <div class="sidebar-user">
             <span class="user-avatar"><?= e(strtoupper(substr((string) ($user['full_name'] ?? 'U'), 0, 1))) ?></span>
@@ -52,6 +58,11 @@ $currentPage = basename($_SERVER['PHP_SELF'] ?? '');
                 <?php if (!empty($pageSubtitle)): ?><p class="subtitle"><?= e($pageSubtitle) ?></p><?php endif; ?>
             </div>
             <div class="topbar-actions">
+                <button class="micei-theme-toggle" type="button" data-theme-toggle aria-pressed="false">
+                    <svg class="theme-icon theme-icon-sun" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+                    <svg class="theme-icon theme-icon-moon" aria-hidden="true" viewBox="0 0 24 24"><path d="M20.5 15.4A9 9 0 0 1 8.6 3.5 9 9 0 1 0 20.5 15.4Z"/></svg>
+                    <span data-theme-label>Dark mode</span>
+                </button>
                 <button class="sidebar-toggle" type="button" aria-controls="app-sidebar" aria-expanded="false">
                     <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
                     Menu
@@ -67,6 +78,11 @@ $currentPage = basename($_SERVER['PHP_SELF'] ?? '');
         <?php endforeach; ?>
 <?php else: ?>
 <div class="auth-shell">
+    <button class="micei-theme-toggle auth-theme-toggle" type="button" data-theme-toggle aria-pressed="false">
+        <svg class="theme-icon theme-icon-sun" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="theme-icon theme-icon-moon" aria-hidden="true" viewBox="0 0 24 24"><path d="M20.5 15.4A9 9 0 0 1 8.6 3.5 9 9 0 1 0 20.5 15.4Z"/></svg>
+        <span data-theme-label>Dark mode</span>
+    </button>
     <?php foreach ($flashes as $flash): ?>
         <div class="alert alert-<?= e($flash['type']) ?>"><?= e($flash['message']) ?></div>
     <?php endforeach; ?>
