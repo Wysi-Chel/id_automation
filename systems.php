@@ -42,7 +42,6 @@ $flashes = pull_flashes();
             <button class="micei-theme-toggle compact" type="button" data-theme-toggle aria-pressed="false">
                 <svg class="theme-icon theme-icon-sun" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
                 <svg class="theme-icon theme-icon-moon" aria-hidden="true" viewBox="0 0 24 24"><path d="M20.5 15.4A9 9 0 0 1 8.6 3.5 9 9 0 1 0 20.5 15.4Z"/></svg>
-                <span data-theme-label>Dark mode</span>
             </button>
             <span class="system-hub-account-copy">
                 <small>Signed in as</small>
@@ -76,7 +75,7 @@ $flashes = pull_flashes();
         <div class="alert alert-<?= e($flash['type']) ?>"><?= e($flash['message']) ?></div>
     <?php endforeach; ?>
 
-    <section class="system-launcher-grid" aria-label="Available monitoring systems">
+    <section class="system-launcher-grid" aria-label="Available systems">
         <a class="system-tile system-tile-red" href="/micei_mis/dashboard.php">
             <span class="system-tile-top">
                 <span class="system-tile-icon" aria-hidden="true">
@@ -132,6 +131,28 @@ $flashes = pull_flashes();
             <span class="system-tile-copy">
                 <strong>Ink Monitoring</strong>
                 <small>Track printer ink requests, requisition slips, ink-level evidence, and issuance status.</small>
+            </span>
+            <span class="system-tile-footer">
+                <span class="system-tile-arrow" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </span>
+            </span>
+        </a>
+
+        <a class="system-tile system-tile-green" href="/ppe_lapsing/">
+            <span class="system-tile-top">
+                <span class="system-tile-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M5 7.5h14v12H5z"/>
+                        <path d="M8 7.5V5h8v2.5M8 12h8M8 16h5"/>
+                        <path d="M17 14.5h3.5M18.75 12.75v3.5"/>
+                    </svg>
+                </span>
+                <span class="system-tile-state"><i aria-hidden="true"></i> Available</span>
+            </span>
+            <span class="system-tile-copy">
+                <strong>PPE Lapsing</strong>
+                <small>Manage PPE assets, depreciation schedules, transfers, alerts, and reports.</small>
             </span>
             <span class="system-tile-footer">
                 <span class="system-tile-arrow" aria-hidden="true">
