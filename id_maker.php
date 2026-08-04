@@ -145,6 +145,35 @@ require __DIR__ . '/includes/header.php';
                 </label>
                 <p class="help">Placement is saved automatically for this employee on this browser.</p>
             </div>
+            <div class="back-text-editor" id="backTextEditor">
+                <div class="back-text-heading">
+                    <div>
+                        <h4>Back text layout</h4>
+                        <p>Select a text block, then drag it on the back ID or use the controls below.</p>
+                    </div>
+                    <button class="btn btn-secondary btn-sm" type="button" data-back-text-reset-all>Reset all</button>
+                </div>
+                <div class="form-group back-text-field">
+                    <label for="backTextField">Text to adjust</label>
+                    <select id="backTextField" data-back-text-select></select>
+                </div>
+                <label class="back-text-range">
+                    <span>Horizontal position <output data-back-text-output="x"></output></span>
+                    <input type="range" min="0" max="600" step="1" data-back-text-control="x">
+                </label>
+                <label class="back-text-range">
+                    <span>Vertical position <output data-back-text-output="y"></output></span>
+                    <input type="range" min="0" max="960" step="1" data-back-text-control="y">
+                </label>
+                <label class="back-text-range">
+                    <span>Font size <output data-back-text-output="fontSize"></output></span>
+                    <input type="range" min="8" max="120" step="0.5" data-back-text-control="fontSize">
+                </label>
+                <div class="back-text-actions">
+                    <button class="btn btn-secondary btn-sm" type="button" data-back-text-reset>Reset selected text</button>
+                </div>
+                <p class="help">Changes are saved for this employee and ID template on this browser.</p>
+            </div>
             <p class="help" style="margin-top:18px">The front and back are downloaded separately. No three-ID print sheet is included.</p>
             <?php if (!$photoData): ?><div class="alert alert-warning">No employee photo has been uploaded. A placeholder will appear.</div><?php endif; ?>
             <?php if (!$signatureData): ?><div class="alert alert-warning">No employee signature has been uploaded. A signature line will appear.</div><?php endif; ?>

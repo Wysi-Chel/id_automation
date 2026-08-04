@@ -311,6 +311,86 @@
         ntrEmergencyAddressLines.push('');
     }
 
+    const backTextDefinitions = () => {
+        if (isNtrTemplate()) {
+            return {
+                dateOfBirth: { label: 'Date of birth', x: 561, y: 423, fontSize: 24.2 },
+                dateHired: { label: 'Date hired', x: 561, y: 465, fontSize: 24.2 },
+                governmentNumbers: { label: 'Government numbers', x: 561, y: 512.5, fontSize: 24.2 },
+                emergencyName: { label: 'Emergency contact name', x: 336.5, y: 694, fontSize: ntrEmergencyNameFontSize },
+                emergencyAddress: { label: 'Emergency address', x: 331, y: 728, fontSize: 22 },
+                emergencyNumber: { label: 'Emergency phone number', x: 331, y: 781, fontSize: 24.5 },
+            };
+        }
+
+        if (isFusoTemplate()) {
+            return {
+                emergencyName: { label: 'Emergency contact name', x: 301.5, y: 271.5, fontSize: fusoEmergencyNameFontSize },
+                emergencyAddress: { label: 'Emergency address', x: 301.5, y: 303, fontSize: fusoEmergencyAddressFontSize },
+                emergencyNumber: { label: 'Emergency phone number', x: 301.5, y: 324, fontSize: 26 },
+                employeeName: { label: 'Employee name', x: 309.3, y: 574.5, fontSize: fontSizeForLength(employee.name, 36, 31, 27) },
+                dateOfBirth: { label: 'Date of birth', x: 83.2, y: 652, fontSize: fusoDateFontSize(employee.dob) },
+                dateHired: { label: 'Date hired', x: 400.3, y: 652, fontSize: fusoDateFontSize(employee.dateHired) },
+                governmentNumbers: { label: 'Government numbers', x: 533.4, y: 705.6, fontSize: 24.2 },
+            };
+        }
+
+        const definitions = {
+            emergencyName: { label: 'Emergency contact name', x: 301.15, y: 299.61, fontSize: emergencyNameFontSize },
+            emergencyAddress: { label: 'Emergency address', x: 299, y: 339.5, fontSize: 37 },
+            emergencyNumber: { label: 'Emergency phone number', x: 299, y: 410, fontSize: 38 },
+            dateOfBirth: { label: 'Date of birth', x: 74, y: 640.5, fontSize: 25.083 },
+            dateHired: { label: 'Date hired', x: 393, y: 636.5, fontSize: 25.083 },
+            governmentNumbers: { label: 'Government numbers', x: 550.38, y: 686.88, fontSize: 25.083 },
+        };
+        if (Array.isArray(selectedTemplate().companyAddress)) {
+            definitions.companyAddressLine1 = { label: 'Company address – first line', x: 300, y: 522, fontSize: 24.166 };
+            definitions.companyAddressLine2 = { label: 'Company address – second line', x: 300, y: 552, fontSize: 24.166 };
+        }
+        return definitions;
+    };
+
+    const normalizeBackTextSetting = (value, defaults) => {
+        const numberOrDefault = (candidate, fallback) => {
+            const number = Number(candidate);
+            return Number.isFinite(number) ? number : fallback;
+        };
+        return {
+            x: clamp(numberOrDefault(value?.x, defaults.x), 0, CARD_WIDTH),
+            y: clamp(numberOrDefault(value?.y, defaults.y), 0, CARD_HEIGHT),
+            fontSize: clamp(numberOrDefault(value?.fontSize, defaults.fontSize), 8, 120),
+        };
+    };
+
+    const backTextStorageKey = () => `employee-id-back-text:${employee.id}:${selectedTemplateKey}`;
+    const loadBackTextSettings = () => {
+        const definitions = backTextDefinitions();
+        let stored = {};
+        try {
+            stored = JSON.parse(window.localStorage.getItem(backTextStorageKey()) || '{}');
+        } catch (_) {
+            stored = {};
+        }
+
+        return Object.fromEntries(Object.entries(definitions).map(([key, defaults]) => [
+            key,
+            normalizeBackTextSetting(stored[key], defaults),
+        ]));
+    };
+
+    let backTextSettings = loadBackTextSettings();
+    let selectedBackTextKey = Object.keys(backTextSettings)[0];
+    const backTextSetting = key => backTextSettings[key] || backTextDefinitions()[key];
+    const backTextAttributes = key => `data-back-text-key="${key}" style="cursor:move;touch-action:none"`;
+
+    const saveBackTextSettings = () => {
+        try {
+            window.localStorage.setItem(backTextStorageKey(), JSON.stringify(backTextSettings));
+        } catch (_) {
+            // Text editing still works for the current page if browser storage is unavailable.
+        }
+    };
+
     const createMitsubishiFront = () => `
     <svg xmlns="${SVG_NS}" id="idFront" viewBox="0 0 ${CARD_WIDTH} ${CARD_HEIGHT}"
          width="${CARD_WIDTH}" height="${CARD_HEIGHT}" role="img" aria-label="Employee ID front">
@@ -406,13 +486,17 @@
             return '';
         }
 
+        const firstLine = backTextSetting('companyAddressLine1');
+        const secondLine = backTextSetting('companyAddressLine2');
+
         return `
-        <text x="300" y="522" text-anchor="middle" fill="#000" font-size="24.166">
+        <text x="${firstLine.x}" y="${firstLine.y}" text-anchor="middle" fill="#000"
+              font-size="${firstLine.fontSize}" ${backTextAttributes('companyAddressLine1')}>
             <tspan class="mm-medium">COMPANY ADDRESS: </tspan>
             <tspan class="mm-bold">${escapeXml(address[0])}</tspan>
         </text>
-        <text x="300" y="552" text-anchor="middle" class="mm-bold"
-              fill="#000" font-size="24.166">${escapeXml(address[1])}</text>`;
+        <text x="${secondLine.x}" y="${secondLine.y}" text-anchor="middle" class="mm-bold"
+              fill="#000" font-size="${secondLine.fontSize}" ${backTextAttributes('companyAddressLine2')}>${escapeXml(address[1])}</text>`;
     };
 
     const createMitsubishiBack = () => `
@@ -420,55 +504,66 @@
          width="${CARD_WIDTH}" height="${CARD_HEIGHT}" role="img" aria-label="Employee ID back">
         <defs>${fontDefinitions}</defs>
         <image href="${selectedTemplate().back}" x="0" y="0" width="${CARD_WIDTH}" height="${CARD_HEIGHT}"/>
-        <text x="301.15" y="299.61" text-anchor="middle" class="mm-medium"
-              fill="#fff" font-size="${emergencyNameFontSize}">${escapeXml(employee.emergencyName)}</text>
-        <text text-anchor="middle" class="mm-medium" fill="#fff" font-size="37">
-            ${tspans(emergencyAddressLines, 299, 339.5, 33.333)}
+        <text x="${backTextSetting('emergencyName').x}" y="${backTextSetting('emergencyName').y}"
+              text-anchor="middle" class="mm-medium" fill="#fff"
+              font-size="${backTextSetting('emergencyName').fontSize}" ${backTextAttributes('emergencyName')}>${escapeXml(employee.emergencyName)}</text>
+        <text text-anchor="middle" class="mm-medium" fill="#fff"
+              font-size="${backTextSetting('emergencyAddress').fontSize}" ${backTextAttributes('emergencyAddress')}>
+            ${tspans(emergencyAddressLines, backTextSetting('emergencyAddress').x, backTextSetting('emergencyAddress').y, 33.333)}
         </text>
-        <text x="299" y="410" text-anchor="middle" class="mm-medium"
-              fill="#fff" font-size="38">${escapeXml(employee.emergencyNumber)}</text>
+        <text x="${backTextSetting('emergencyNumber').x}" y="${backTextSetting('emergencyNumber').y}"
+              text-anchor="middle" class="mm-medium" fill="#fff"
+              font-size="${backTextSetting('emergencyNumber').fontSize}" ${backTextAttributes('emergencyNumber')}>${escapeXml(employee.emergencyNumber)}</text>
         ${companyAddressMarkup()}
-        <text x="74" y="640.5" class="mm-bold" fill="#000"
-              font-size="25.083">${escapeXml(employee.dob)}</text>
-        <text x="393" y="636.5" class="mm-bold" fill="#000"
-              font-size="25.083">${escapeXml(employee.dateHired)}</text>
-        <text x="550.38" text-anchor="end" class="mm-bold" fill="#000" font-size="25.083">
+        <text x="${backTextSetting('dateOfBirth').x}" y="${backTextSetting('dateOfBirth').y}"
+              class="mm-bold" fill="#000" font-size="${backTextSetting('dateOfBirth').fontSize}"
+              ${backTextAttributes('dateOfBirth')}>${escapeXml(employee.dob)}</text>
+        <text x="${backTextSetting('dateHired').x}" y="${backTextSetting('dateHired').y}"
+              class="mm-bold" fill="#000" font-size="${backTextSetting('dateHired').fontSize}"
+              ${backTextAttributes('dateHired')}>${escapeXml(employee.dateHired)}</text>
+        <text x="${backTextSetting('governmentNumbers').x}" text-anchor="end" class="mm-bold" fill="#000"
+              font-size="${backTextSetting('governmentNumbers').fontSize}" ${backTextAttributes('governmentNumbers')}>
             ${tspans(
                 [employee.sss, employee.philhealth, employee.tin, employee.hdmf],
-                550.38,
-                686.88,
+                backTextSetting('governmentNumbers').x,
+                backTextSetting('governmentNumbers').y,
                 30.25
             )}
         </text>
     </svg>`;
 
     const createFusoBack = () => {
-        const emergencyAddressFirstBaseline = 303;
-        const emergencyNumberBaseline = 324;
         return `
     <svg xmlns="${SVG_NS}" id="idBack" viewBox="0 0 ${CARD_WIDTH} ${CARD_HEIGHT}"
          width="${CARD_WIDTH}" height="${CARD_HEIGHT}" role="img" aria-label="FUSO employee ID back">
         <defs>${fontDefinitions}</defs>
         <image href="${selectedTemplate().back}" x="0" y="0" width="${CARD_WIDTH}" height="${CARD_HEIGHT}"/>
-        <text x="301.5" y="271.5" text-anchor="middle" class="mm-medium"
-              fill="#000" font-size="${fusoEmergencyNameFontSize}">${escapeXml(employee.emergencyName)}</text>
-        <text text-anchor="middle" class="mm-medium" fill="#000" font-size="${fusoEmergencyAddressFontSize}">
-            ${tspans(fusoEmergencyAddressLines, 301.5, emergencyAddressFirstBaseline, 21)}
+        <text x="${backTextSetting('emergencyName').x}" y="${backTextSetting('emergencyName').y}"
+              text-anchor="middle" class="mm-medium" fill="#000"
+              font-size="${backTextSetting('emergencyName').fontSize}" ${backTextAttributes('emergencyName')}>${escapeXml(employee.emergencyName)}</text>
+        <text text-anchor="middle" class="mm-medium" fill="#000"
+              font-size="${backTextSetting('emergencyAddress').fontSize}" ${backTextAttributes('emergencyAddress')}>
+            ${tspans(fusoEmergencyAddressLines, backTextSetting('emergencyAddress').x, backTextSetting('emergencyAddress').y, 21)}
         </text>
-        <text x="301.5" y="${emergencyNumberBaseline}" text-anchor="middle" class="mm-medium"
-              fill="#000" font-size="26">${escapeXml(employee.emergencyNumber)}</text>
+        <text x="${backTextSetting('emergencyNumber').x}" y="${backTextSetting('emergencyNumber').y}"
+              text-anchor="middle" class="mm-medium" fill="#000"
+              font-size="${backTextSetting('emergencyNumber').fontSize}" ${backTextAttributes('emergencyNumber')}>${escapeXml(employee.emergencyNumber)}</text>
         ${fusoSignatureMarkup}
-        <text x="309.3" y="574.5" text-anchor="middle" class="mm-medium"
-              fill="#000" font-size="${fontSizeForLength(employee.name, 36, 31, 27)}">${escapeXml(employee.name)}</text>
-        <text x="83.2" y="652" class="mm-bold" fill="#000"
-              font-size="${fusoDateFontSize(employee.dob)}">${escapeXml(employee.dob)}</text>
-        <text x="400.3" y="652" class="mm-bold" fill="#000"
-              font-size="${fusoDateFontSize(employee.dateHired)}">${escapeXml(employee.dateHired)}</text>
-        <text x="533.4" text-anchor="end" class="mm-bold" fill="#000" font-size="24.2">
+        <text x="${backTextSetting('employeeName').x}" y="${backTextSetting('employeeName').y}"
+              text-anchor="middle" class="mm-medium" fill="#000"
+              font-size="${backTextSetting('employeeName').fontSize}" ${backTextAttributes('employeeName')}>${escapeXml(employee.name)}</text>
+        <text x="${backTextSetting('dateOfBirth').x}" y="${backTextSetting('dateOfBirth').y}"
+              class="mm-bold" fill="#000" font-size="${backTextSetting('dateOfBirth').fontSize}"
+              ${backTextAttributes('dateOfBirth')}>${escapeXml(employee.dob)}</text>
+        <text x="${backTextSetting('dateHired').x}" y="${backTextSetting('dateHired').y}"
+              class="mm-bold" fill="#000" font-size="${backTextSetting('dateHired').fontSize}"
+              ${backTextAttributes('dateHired')}>${escapeXml(employee.dateHired)}</text>
+        <text x="${backTextSetting('governmentNumbers').x}" text-anchor="end" class="mm-bold" fill="#000"
+              font-size="${backTextSetting('governmentNumbers').fontSize}" ${backTextAttributes('governmentNumbers')}>
             ${tspans(
                 [employee.sss, employee.philhealth, employee.tin, employee.hdmf],
-                533.4,
-                705.6,
+                backTextSetting('governmentNumbers').x,
+                backTextSetting('governmentNumbers').y,
                 29.2
             )}
         </text>
@@ -480,19 +575,26 @@
          width="${CARD_WIDTH}" height="${CARD_HEIGHT}" role="img" aria-label="NTRprising employee ID back">
         <defs>${fontDefinitions}</defs>
         <image href="${selectedTemplate().back}" x="0" y="0" width="${CARD_WIDTH}" height="${CARD_HEIGHT}"/>
-        <text x="561" text-anchor="end" class="hyundai-bold" fill="#000" font-size="24.2">
-            ${tspans([ntrDateOfBirth, ntrDateHired], 561, 423, 42)}
+        <text x="${backTextSetting('dateOfBirth').x}" y="${backTextSetting('dateOfBirth').y}"
+              text-anchor="end" class="hyundai-bold" fill="#000"
+              font-size="${backTextSetting('dateOfBirth').fontSize}" ${backTextAttributes('dateOfBirth')}>${escapeXml(ntrDateOfBirth)}</text>
+        <text x="${backTextSetting('dateHired').x}" y="${backTextSetting('dateHired').y}"
+              text-anchor="end" class="hyundai-bold" fill="#000"
+              font-size="${backTextSetting('dateHired').fontSize}" ${backTextAttributes('dateHired')}>${escapeXml(ntrDateHired)}</text>
+        <text x="${backTextSetting('governmentNumbers').x}" text-anchor="end" class="mm-bold" fill="#000"
+              font-size="${backTextSetting('governmentNumbers').fontSize}" ${backTextAttributes('governmentNumbers')}>
+            ${tspans([employee.sss, employee.philhealth, employee.tin, employee.hdmf], backTextSetting('governmentNumbers').x, backTextSetting('governmentNumbers').y, 35.1)}
         </text>
-        <text x="561" text-anchor="end" class="mm-bold" fill="#000" font-size="24.2">
-            ${tspans([employee.sss, employee.philhealth, employee.tin, employee.hdmf], 561, 512.5, 35.1)}
+        <text x="${backTextSetting('emergencyName').x}" y="${backTextSetting('emergencyName').y}"
+              text-anchor="middle" class="hyundai-bold" fill="#000"
+              font-size="${backTextSetting('emergencyName').fontSize}" ${backTextAttributes('emergencyName')}>${escapeXml(employee.emergencyName)}</text>
+        <text text-anchor="middle" class="hyundai-bold" fill="#000"
+              font-size="${backTextSetting('emergencyAddress').fontSize}" ${backTextAttributes('emergencyAddress')}>
+            ${tspans(ntrEmergencyAddressLines, backTextSetting('emergencyAddress').x, backTextSetting('emergencyAddress').y, 25)}
         </text>
-        <text x="336.5" y="694" text-anchor="middle" class="hyundai-bold"
-              fill="#000" font-size="${ntrEmergencyNameFontSize}">${escapeXml(employee.emergencyName)}</text>
-        <text text-anchor="middle" class="hyundai-bold" fill="#000" font-size="22">
-            ${tspans(ntrEmergencyAddressLines, 331, 728, 25)}
-        </text>
-        <text x="331" y="781" text-anchor="middle" class="hyundai-bold"
-              fill="#000" font-size="24.5">${escapeXml(employee.emergencyNumber)}</text>
+        <text x="${backTextSetting('emergencyNumber').x}" y="${backTextSetting('emergencyNumber').y}"
+              text-anchor="middle" class="hyundai-bold" fill="#000"
+              font-size="${backTextSetting('emergencyNumber').fontSize}" ${backTextAttributes('emergencyNumber')}>${escapeXml(employee.emergencyNumber)}</text>
     </svg>`;
 
     const createBack = () => isNtrTemplate()
@@ -647,6 +749,142 @@
     document.addEventListener('pointercancel', finishPhotoDrag);
     applyPhotoPlacement();
 
+    const backContainer = document.getElementById('backContainer');
+    const backTextSelect = document.querySelector('[data-back-text-select]');
+    const backTextInputs = [...document.querySelectorAll('[data-back-text-control]')];
+    const backTextOutputs = [...document.querySelectorAll('[data-back-text-output]')];
+
+    const populateBackTextSelect = () => {
+        const definitions = backTextDefinitions();
+        const keys = Object.keys(definitions);
+        if (!keys.includes(selectedBackTextKey)) {
+            selectedBackTextKey = keys[0];
+        }
+
+        backTextSelect.replaceChildren(...Object.entries(definitions).map(([key, definition]) => {
+            const option = document.createElement('option');
+            option.value = key;
+            option.textContent = definition.label;
+            return option;
+        }));
+        backTextSelect.value = selectedBackTextKey;
+    };
+
+    const syncBackTextControls = () => {
+        const setting = backTextSetting(selectedBackTextKey);
+        if (!setting) return;
+
+        for (const input of backTextInputs) {
+            input.value = String(setting[input.dataset.backTextControl]);
+        }
+        for (const output of backTextOutputs) {
+            const key = output.dataset.backTextOutput;
+            const value = setting[key];
+            output.value = key === 'fontSize'
+                ? `${Number(value).toFixed(1)} px`
+                : `${Math.round(value)} px`;
+        }
+    };
+
+    const selectBackText = key => {
+        if (!backTextSettings[key]) return;
+        selectedBackTextKey = key;
+        backTextSelect.value = key;
+        syncBackTextControls();
+    };
+
+    const updateBackText = (changes, persist = true) => {
+        const defaults = backTextDefinitions()[selectedBackTextKey];
+        if (!defaults) return;
+        backTextSettings[selectedBackTextKey] = normalizeBackTextSetting({
+            ...backTextSettings[selectedBackTextKey],
+            ...changes,
+        }, defaults);
+        renderBack();
+        syncBackTextControls();
+        if (persist) saveBackTextSettings();
+    };
+
+    populateBackTextSelect();
+    syncBackTextControls();
+
+    backTextSelect.addEventListener('change', () => selectBackText(backTextSelect.value));
+    backTextInputs.forEach(input => input.addEventListener('input', () => {
+        const value = Number(input.value);
+        if (Number.isFinite(value)) {
+            updateBackText({ [input.dataset.backTextControl]: value });
+        }
+    }));
+
+    document.querySelector('[data-back-text-reset]')?.addEventListener('click', () => {
+        const defaults = backTextDefinitions()[selectedBackTextKey];
+        if (!defaults) return;
+        backTextSettings[selectedBackTextKey] = normalizeBackTextSetting(defaults, defaults);
+        renderBack();
+        syncBackTextControls();
+        saveBackTextSettings();
+    });
+
+    document.querySelector('[data-back-text-reset-all]')?.addEventListener('click', () => {
+        backTextSettings = loadBackTextSettings();
+        for (const [key, defaults] of Object.entries(backTextDefinitions())) {
+            backTextSettings[key] = normalizeBackTextSetting(defaults, defaults);
+        }
+        renderBack();
+        syncBackTextControls();
+        saveBackTextSettings();
+    });
+
+    const cardPointFromBackPointer = event => {
+        const svg = document.getElementById('idBack');
+        const bounds = svg.getBoundingClientRect();
+        return {
+            x: ((event.clientX - bounds.left) / bounds.width) * CARD_WIDTH,
+            y: ((event.clientY - bounds.top) / bounds.height) * CARD_HEIGHT,
+        };
+    };
+
+    let backTextDrag = null;
+    backContainer.addEventListener('pointerdown', event => {
+        if (!(event.target instanceof Element)) return;
+        const text = event.target.closest('[data-back-text-key]');
+        if (!text) return;
+
+        const key = text.dataset.backTextKey;
+        selectBackText(key);
+        const point = cardPointFromBackPointer(event);
+        const setting = backTextSetting(key);
+        backTextDrag = {
+            pointerId: event.pointerId,
+            pointX: point.x,
+            pointY: point.y,
+            textX: setting.x,
+            textY: setting.y,
+        };
+        backContainer.classList.add('is-back-text-dragging');
+        event.preventDefault();
+    });
+
+    document.addEventListener('pointermove', event => {
+        if (!backTextDrag || event.pointerId !== backTextDrag.pointerId) return;
+        const point = cardPointFromBackPointer(event);
+        updateBackText({
+            x: Math.round(backTextDrag.textX + point.x - backTextDrag.pointX),
+            y: Math.round(backTextDrag.textY + point.y - backTextDrag.pointY),
+        }, false);
+        event.preventDefault();
+    });
+
+    const finishBackTextDrag = event => {
+        if (!backTextDrag || event.pointerId !== backTextDrag.pointerId) return;
+        backTextDrag = null;
+        backContainer.classList.remove('is-back-text-dragging');
+        saveBackTextSettings();
+    };
+
+    document.addEventListener('pointerup', finishBackTextDrag);
+    document.addEventListener('pointercancel', finishBackTextDrag);
+
     const templateSelect = document.querySelector('[data-id-template]');
     if (templateSelect) {
         templateSelect.value = selectedTemplateKey;
@@ -660,6 +898,8 @@
             if (photoPlacementProfile() !== previousPhotoProfile) {
                 Object.assign(photoPlacement, loadPhotoPlacement());
             }
+            backTextSettings = loadBackTextSettings();
+            selectedBackTextKey = Object.keys(backTextSettings)[0];
             try {
                 window.localStorage.setItem(templateStorageKey, selectedTemplateKey);
             } catch (_) {
@@ -668,6 +908,8 @@
             renderFront();
             renderBack();
             applyPhotoPlacement();
+            populateBackTextSelect();
+            syncBackTextControls();
         });
     }
 
