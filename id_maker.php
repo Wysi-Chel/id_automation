@@ -88,8 +88,8 @@ require __DIR__ . '/includes/header.php';
 ?>
 <div class="id-layout">
     <div class="id-previews">
-        <section class="card id-panel"><h3>Front</h3><div class="id-card-frame" id="frontContainer"></div><div class="actions" style="justify-content:center;margin-top:14px"><button class="btn btn-primary" type="button" data-download="front">Download front PNG</button><button class="btn btn-secondary" type="button" data-print="front">Print front</button></div></section>
-        <section class="card id-panel"><h3>Back</h3><div class="id-card-frame" id="backContainer"></div><div class="actions" style="justify-content:center;margin-top:14px"><button class="btn btn-primary" type="button" data-download="back">Download back PNG</button><button class="btn btn-secondary" type="button" data-print="back">Print back</button></div></section>
+        <section class="card id-panel" data-id-preview-side="front"><h3>Front</h3><div class="id-card-frame" id="frontContainer"></div><div class="actions" style="justify-content:center;margin-top:14px"><button class="btn btn-primary" type="button" data-download="front">Download front PNG</button><button class="btn btn-secondary" type="button" data-print="front">Print front</button></div></section>
+        <section class="card id-panel" data-id-preview-side="back" hidden><h3>Back</h3><div class="id-card-frame" id="backContainer"></div><div class="actions" style="justify-content:center;margin-top:14px"><button class="btn btn-primary" type="button" data-download="back">Download back PNG</button><button class="btn btn-secondary" type="button" data-print="back">Print back</button></div></section>
     </div>
     <aside class="card">
         <div class="card-header"><h3>ID output details</h3></div>
@@ -101,6 +101,14 @@ require __DIR__ . '/includes/header.php';
                 <dt style="margin-top:14px">Company</dt><dd><?= e(($employee['company_code'] ?? 'MGSC') . ' — ' . company_label($employee['company_code'] ?? 'MGSC')) ?></dd>
                 <dt style="margin-top:14px">Output size</dt><dd>600 × 960 pixels per side</dd>
             </dl>
+            <div class="form-group id-side-selector">
+                <label for="idEditSide">Side to edit</label>
+                <select id="idEditSide" data-id-edit-side>
+                    <option value="front">Front</option>
+                    <option value="back">Back</option>
+                </select>
+                <span class="help">The selected side stays visible while you adjust its layout.</span>
+            </div>
             <div class="form-group id-template-selector">
                 <label for="idTemplate">ID template</label>
                 <select id="idTemplate" data-id-template>
@@ -111,7 +119,7 @@ require __DIR__ . '/includes/header.php';
                 </select>
                 <span class="help">Defaults from the employee’s company. A change here applies to this output only.</span>
             </div>
-            <div class="photo-placement-editor" id="photoPlacementEditor">
+            <div class="photo-placement-editor" id="photoPlacementEditor" data-id-editor-side="front">
                 <div class="photo-placement-heading">
                     <div>
                         <h4>Photo placement</h4>
@@ -120,11 +128,11 @@ require __DIR__ . '/includes/header.php';
                     <button class="btn btn-secondary btn-sm" type="button" data-photo-reset>Reset</button>
                 </div>
                 <label class="photo-range">
-                    <span>Horizontal position <output data-photo-output="x"></output></span>
+                    <span>Horizontal position <span class="range-number"><input type="number" min="0" max="295" step="1" value="40" data-photo-control="x" aria-label="Horizontal photo position in pixels"><span aria-hidden="true">px</span></span></span>
                     <input type="range" min="0" max="295" step="1" value="40" data-photo-control="x">
                 </label>
                 <label class="photo-range">
-                    <span>Vertical position <output data-photo-output="y"></output></span>
+                    <span>Vertical position <span class="range-number"><input type="number" min="0" max="655" step="1" value="280" data-photo-control="y" aria-label="Vertical photo position in pixels"><span aria-hidden="true">px</span></span></span>
                     <input type="range" min="0" max="655" step="1" value="280" data-photo-control="y">
                 </label>
                 <label class="photo-range">
@@ -145,7 +153,7 @@ require __DIR__ . '/includes/header.php';
                 </label>
                 <p class="help">Placement is saved automatically for this employee on this browser.</p>
             </div>
-            <div class="back-text-editor" id="backTextEditor">
+            <div class="back-text-editor" id="backTextEditor" data-id-editor-side="back" hidden>
                 <div class="back-text-heading">
                     <div>
                         <h4>Back text layout</h4>
@@ -158,11 +166,11 @@ require __DIR__ . '/includes/header.php';
                     <select id="backTextField" data-back-text-select></select>
                 </div>
                 <label class="back-text-range">
-                    <span>Horizontal position <output data-back-text-output="x"></output></span>
+                    <span>Horizontal position <span class="range-number"><input type="number" min="0" max="600" step="1" data-back-text-control="x" aria-label="Horizontal text position in pixels"><span aria-hidden="true">px</span></span></span>
                     <input type="range" min="0" max="600" step="1" data-back-text-control="x">
                 </label>
                 <label class="back-text-range">
-                    <span>Vertical position <output data-back-text-output="y"></output></span>
+                    <span>Vertical position <span class="range-number"><input type="number" min="0" max="960" step="1" data-back-text-control="y" aria-label="Vertical text position in pixels"><span aria-hidden="true">px</span></span></span>
                     <input type="range" min="0" max="960" step="1" data-back-text-control="y">
                 </label>
                 <label class="back-text-range">

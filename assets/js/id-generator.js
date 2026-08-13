@@ -614,6 +614,20 @@
     renderFront();
     renderBack();
 
+    const editSideSelect = document.querySelector('[data-id-edit-side]');
+    const editSideElements = [...document.querySelectorAll('[data-id-preview-side], [data-id-editor-side]')];
+    const selectEditSide = side => {
+        const selectedSide = side === 'back' ? 'back' : 'front';
+        for (const element of editSideElements) {
+            const elementSide = element.dataset.idPreviewSide || element.dataset.idEditorSide;
+            element.hidden = elementSide !== selectedSide;
+        }
+        if (editSideSelect) editSideSelect.value = selectedSide;
+    };
+
+    editSideSelect?.addEventListener('change', () => selectEditSide(editSideSelect.value));
+    selectEditSide(editSideSelect?.value);
+
     const frontContainer = document.getElementById('frontContainer');
     const photoInputs = [...document.querySelectorAll('[data-photo-control]')];
     const photoOutputs = [...document.querySelectorAll('[data-photo-output]')];
@@ -685,11 +699,15 @@
     };
 
     photoInputs.forEach(input => input.addEventListener('input', () => {
+        if (input.value === '') return;
         const key = input.dataset.photoControl;
         const value = Number(input.value);
         if (Number.isFinite(value)) {
             updatePhotoPlacement({ [key]: value });
         }
+    }));
+    photoInputs.forEach(input => input.addEventListener('change', () => {
+        if (input.value === '') syncPhotoControls();
     }));
 
     document.querySelector('[data-photo-reset]')?.addEventListener('click', () => {
@@ -810,10 +828,14 @@
 
     backTextSelect.addEventListener('change', () => selectBackText(backTextSelect.value));
     backTextInputs.forEach(input => input.addEventListener('input', () => {
+        if (input.value === '') return;
         const value = Number(input.value);
         if (Number.isFinite(value)) {
             updateBackText({ [input.dataset.backTextControl]: value });
         }
+    }));
+    backTextInputs.forEach(input => input.addEventListener('change', () => {
+        if (input.value === '') syncBackTextControls();
     }));
 
     document.querySelector('[data-back-text-reset]')?.addEventListener('click', () => {

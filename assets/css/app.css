@@ -127,11 +127,12 @@ tr:last-child td { border-bottom: 0; }
 .login-card .form-group { margin-bottom: 15px; }
 .login-card .btn { width: 100%; margin-top: 5px; }
 .id-layout { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 22px; align-items: start; }
-.id-previews { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.id-previews { position: sticky; top: 18px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
 .id-panel { padding: 16px; text-align: center; }
 .id-panel h3 { margin: 0 0 13px; }
-.id-card-frame { max-width: 380px; margin: auto; background: #ddd; padding: 8px; border-radius: 10px; box-shadow: 0 12px 28px rgba(0,0,0,.12); }
+.id-card-frame { width: min(100%, 340px, calc((100vh - 175px) * .625)); max-width: 380px; margin: auto; background: #ddd; padding: 8px; border-radius: 10px; box-shadow: 0 12px 28px rgba(0,0,0,.12); }
 .id-card-frame svg { display: block; width: 100%; height: auto; background: white; }
+.id-side-selector,
 .id-template-selector { margin-top: 20px; }
 .photo-placement-editor,
 .back-text-editor { margin: 20px 0; padding: 15px; border: 1px solid var(--line); border-radius: 10px; background: #f9fafb; }
@@ -147,6 +148,8 @@ tr:last-child td { border-bottom: 0; }
 .back-text-range > span { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; }
 .photo-range output,
 .back-text-range output { color: var(--muted); font-variant-numeric: tabular-nums; }
+.range-number { display: inline-flex; align-items: center; gap: 4px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.range-number input { width: 72px; min-height: 28px; padding: 3px 6px; border-radius: 6px; font-size: 12px; text-align: right; }
 .photo-range input[type="range"],
 .back-text-range input[type="range"] { padding: 0; accent-color: var(--red); cursor: pointer; }
 .id-card-frame.is-photo-dragging { outline: 3px solid rgba(215,25,32,.22); }
@@ -855,6 +858,8 @@ input:focus, select:focus, textarea:focus {
 @media (max-width: 1080px) {
     .grid-4 { grid-template-columns: repeat(2,1fr); }
     .id-layout { grid-template-columns: 1fr; }
+    .id-previews { position: static; }
+    .id-card-frame { width: auto; }
     .filters { grid-template-columns: repeat(2,1fr); }
 }
 @media (max-width: 900px) {
