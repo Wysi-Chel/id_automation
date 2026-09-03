@@ -94,7 +94,8 @@ INSERT INTO departments (name, code) VALUES
 ('Information Technology', 'IT'),
 ('Human Resource', 'HR'),
 ('CNC', 'CNC'),
-('BRP', 'BRP');
+('BRP', 'BRP'),
+('Manila Office', 'MNL');
 
 INSERT INTO users (username, full_name, password_hash, role)
 VALUES ('admin', 'System Administrator', '$2y$10$Ww2Mhvi5dql17thz7nHsJelL6AlhtMJHFXWHcVtpsPiAzoguriVBm', 'Administrator');

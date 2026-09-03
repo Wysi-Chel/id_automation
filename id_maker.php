@@ -193,5 +193,5 @@ require __DIR__ . '/includes/header.php';
 window.ID_EMPLOYEE = <?= json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>;
 window.ID_TEMPLATE_ASSETS = <?= json_encode($templateAssets, JSON_UNESCAPED_SLASHES) ?>;
 </script>
-<script src="assets/js/id-generator.js"></script>
+<script src="<?= e(asset_url('assets/js/id-generator.js')) ?>"></script>
 <?php require __DIR__ . '/includes/footer.php'; ?>

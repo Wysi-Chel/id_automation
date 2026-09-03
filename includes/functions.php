@@ -6,6 +6,16 @@ function e(?string $value): string
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 }
 
+function asset_url(string $relativePath): string
+{
+    $normalizedPath = ltrim(str_replace('\\', '/', $relativePath), '/');
+    $modifiedAt = @filemtime(dirname(__DIR__) . '/' . $normalizedPath);
+
+    return $modifiedAt === false
+        ? $normalizedPath
+        : $normalizedPath . '?v=' . $modifiedAt;
+}
+
 function button_icon(string $name): string
 {
     $content = match ($name) {

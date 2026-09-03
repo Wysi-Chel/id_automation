@@ -14,10 +14,10 @@ $currentPage = basename($_SERVER['PHP_SELF'] ?? '');
     <title><?= e($pageTitle) ?> · <?= e(APP_NAME) ?></title>
     <link rel="icon" type="image/png" sizes="145x145" href="assets/img/favicon.png">
     <meta name="theme-color" content="#bf1f2f">
-    <script src="assets/js/theme-init.js"></script>
-    <link rel="stylesheet" href="assets/css/app.css">
-    <script src="assets/js/theme.js" defer></script>
-    <script src="assets/js/app.js" defer></script>
+    <script src="<?= e(asset_url('assets/js/theme-init.js')) ?>"></script>
+    <link rel="stylesheet" href="<?= e(asset_url('assets/css/app.css')) ?>">
+    <script src="<?= e(asset_url('assets/js/theme.js')) ?>" defer></script>
+    <script src="<?= e(asset_url('assets/js/app.js')) ?>" defer></script>
 </head>
 <body>
 <?php if ($user): ?>

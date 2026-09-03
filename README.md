@@ -9,7 +9,7 @@ A PHP/MySQL application for XAMPP that manages employee records and generates se
 - Public employee ID intake with photo, signature, validation, and tracking reference
 - Staff ID-request review queue with one-step conversion to an employee record
 - Employee create, edit, view, search, and active/inactive status
-- Seven departments: Accounting, Sales, Service, Information Technology, Human Resource, CNC, and BRP
+- Eight departments: Accounting, Sales, Service, Information Technology, Human Resource, CNC, BRP, and Manila Office
 - Photo and signature uploads
 - Live SVG front/back ID preview
 - Company filters for MGSC, MKC, FUSO, and NGSC employee records
@@ -71,6 +71,8 @@ Import `migrate_add_employee_released_status.sql` once to add release tracking
 after an employee ID is completed.
 Also import `migrate_add_employee_company_code.sql` once to enable MGSC, MKC,
 FUSO, and NGSC company assignment and filtering.
+Import `migrate_add_manila_office_department.sql` once to add the Manila Office
+department.
 
 ## Initial login
 
