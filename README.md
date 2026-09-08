@@ -15,6 +15,9 @@ A PHP/MySQL application for XAMPP that manages employee records and generates se
 - Company filters for MGSC, MKC, FUSO, and NGSC employee records
 - Selectable Mitsubishi General Santos, Mitsubishi Kidapawan, FUSO General Santos, and NTRprising/Hyundai General Santos ID templates
 - Draggable front-photo placement with size, zoom, and crop controls
+- Draggable front text layout: name, position, employee number, department strip, and
+  signature caption, each with horizontal, vertical, and font-size controls
+- Draggable back text layout for every text block on the reverse
 - Separate 600 × 960 PNG downloads for front and back, matching the supplied PSD
 - Separate front/back browser printing
 - Record-monitoring audit trail for:

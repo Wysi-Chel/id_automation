@@ -135,28 +135,40 @@ tr:last-child td { border-bottom: 0; }
 .id-side-selector,
 .id-template-selector { margin-top: 20px; }
 .photo-placement-editor,
+.front-text-editor,
 .back-text-editor { margin: 20px 0; padding: 15px; border: 1px solid var(--line); border-radius: 10px; background: #f9fafb; }
 .photo-placement-heading,
+.front-text-heading,
 .back-text-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
 .photo-placement-heading h4,
+.front-text-heading h4,
 .back-text-heading h4 { margin: 0; font-size: 15px; }
 .photo-placement-heading p,
+.front-text-heading p,
 .back-text-heading p { margin: 4px 0 0; color: var(--muted); font-size: 12px; line-height: 1.4; }
 .photo-range,
+.front-text-range,
 .back-text-range { display: grid; gap: 5px; margin-top: 11px; }
 .photo-range > span,
+.front-text-range > span,
 .back-text-range > span { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; }
 .photo-range output,
+.front-text-range output,
 .back-text-range output { color: var(--muted); font-variant-numeric: tabular-nums; }
 .range-number { display: inline-flex; align-items: center; gap: 4px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .range-number input { width: 72px; min-height: 28px; padding: 3px 6px; border-radius: 6px; font-size: 12px; text-align: right; }
 .photo-range input[type="range"],
+.front-text-range input[type="range"],
 .back-text-range input[type="range"] { padding: 0; accent-color: var(--red); cursor: pointer; }
 .id-card-frame.is-photo-dragging { outline: 3px solid rgba(215,25,32,.22); }
+.id-card-frame.is-front-text-dragging,
 .id-card-frame.is-back-text-dragging { outline: 3px solid rgba(215,25,32,.22); }
 .photo-placement-editor .help,
+.front-text-editor .help,
 .back-text-editor .help { margin: 9px 0 0; }
+.front-text-field,
 .back-text-field { margin-bottom: 0; }
+.front-text-actions,
 .back-text-actions { display: flex; justify-content: flex-end; margin-top: 13px; }
 .audit-description { max-width: 430px; }
 .audit-description small { display: block; color: var(--muted); margin-top: 4px; }
@@ -1081,6 +1093,7 @@ input:focus, select:focus, textarea:focus {
     html[data-theme="dark"] .sidebar nav a.active { color: #ffb6bf; background: #48242a; }
     html[data-theme="dark"] .sidebar-user,
     html[data-theme="dark"] .photo-placement-editor,
+    html[data-theme="dark"] .front-text-editor,
     html[data-theme="dark"] .back-text-editor,
     html[data-theme="dark"] .id-card-frame { color: var(--ink); background: #1c2127; }
     html[data-theme="dark"] .card,

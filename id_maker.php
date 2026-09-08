@@ -153,6 +153,35 @@ require __DIR__ . '/includes/header.php';
                 </label>
                 <p class="help">Placement is saved automatically for this employee on this browser.</p>
             </div>
+            <div class="front-text-editor" id="frontTextEditor" data-id-editor-side="front">
+                <div class="front-text-heading">
+                    <div>
+                        <h4>Front text layout</h4>
+                        <p>Select a text block, then drag it on the front ID or use the controls below.</p>
+                    </div>
+                    <button class="btn btn-secondary btn-sm" type="button" data-front-text-reset-all>Reset all</button>
+                </div>
+                <div class="form-group front-text-field">
+                    <label for="frontTextField">Text to adjust</label>
+                    <select id="frontTextField" data-front-text-select></select>
+                </div>
+                <label class="front-text-range">
+                    <span>Horizontal position <span class="range-number"><input type="number" min="0" max="600" step="1" data-front-text-control="x" aria-label="Horizontal text position in pixels"><span aria-hidden="true">px</span></span></span>
+                    <input type="range" min="0" max="600" step="1" data-front-text-control="x">
+                </label>
+                <label class="front-text-range">
+                    <span>Vertical position <span class="range-number"><input type="number" min="0" max="960" step="1" data-front-text-control="y" aria-label="Vertical text position in pixels"><span aria-hidden="true">px</span></span></span>
+                    <input type="range" min="0" max="960" step="1" data-front-text-control="y">
+                </label>
+                <label class="front-text-range">
+                    <span>Font size <output data-front-text-output="fontSize"></output></span>
+                    <input type="range" min="8" max="120" step="0.5" data-front-text-control="fontSize">
+                </label>
+                <div class="front-text-actions">
+                    <button class="btn btn-secondary btn-sm" type="button" data-front-text-reset>Reset selected text</button>
+                </div>
+                <p class="help">Changes are saved for this employee and ID template on this browser.</p>
+            </div>
             <div class="back-text-editor" id="backTextEditor" data-id-editor-side="back" hidden>
                 <div class="back-text-heading">
                     <div>

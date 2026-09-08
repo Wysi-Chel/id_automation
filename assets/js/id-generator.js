@@ -391,6 +391,85 @@
         }
     };
 
+    const frontTextDefinitions = () => {
+        if (isNtrTemplate()) {
+            return {
+                department: { label: 'Department (vertical)', x: 70, y: 901, fontSize: ntrDepartmentFontSize, rotated: true },
+                employeeNo: { label: 'Employee number', x: 499, y: 558.5, fontSize: 26.8 },
+                name: { label: 'Employee name', x: 341, y: 638, fontSize: ntrNameFontSize },
+                position: { label: 'Position', x: 337, y: 672, fontSize: ntrPositionFontSize },
+                signatureLabel: { label: 'Signature caption', x: 340, y: 884, fontSize: 24.7 },
+            };
+        }
+
+        if (isFusoTemplate()) {
+            return {
+                department: { label: 'Department (vertical)', x: 53.4, y: 566.9, fontSize: fusoDepartmentFontSize, rotated: true },
+                name: { label: 'Employee name', x: 30.3, y: 732.6, fontSize: fusoNameFontSize },
+                position: { label: 'Position', x: 30.3, y: 768.7, fontSize: fusoPositionFontSize },
+                idNumber: { label: 'ID number (vertical)', x: 557.3, y: 906.5, fontSize: 25.6, rotated: true },
+            };
+        }
+
+        return {
+            department: { label: 'Department (vertical)', x: departmentTranslateX, y: 454.7, fontSize: departmentFontSize, rotated: true },
+            employeeNo: { label: 'Employee number block', x: 381.25, y: 535.85, fontSize: 28.5 },
+            name: { label: 'Employee name', x: 30.77, y: 650.85, fontSize: nameFontSize },
+            position: { label: 'Position', x: 33.1, y: 688.78, fontSize: positionFontSize },
+            signatureLabel: { label: 'Signature caption', x: 292.63, y: 818.6, fontSize: 25 },
+        };
+    };
+
+    const normalizeFrontTextSetting = (value, defaults) => {
+        const numberOrDefault = (candidate, fallback) => {
+            const number = Number(candidate);
+            return Number.isFinite(number) ? number : fallback;
+        };
+        return {
+            x: clamp(numberOrDefault(value?.x, defaults.x), 0, CARD_WIDTH),
+            y: clamp(numberOrDefault(value?.y, defaults.y), 0, CARD_HEIGHT),
+            fontSize: clamp(numberOrDefault(value?.fontSize, defaults.fontSize), 8, 120),
+        };
+    };
+
+    const frontTextStorageKey = () => `employee-id-front-text:${employee.id}:${selectedTemplateKey}`;
+    const loadFrontTextSettings = () => {
+        const definitions = frontTextDefinitions();
+        let stored = {};
+        try {
+            stored = JSON.parse(window.localStorage.getItem(frontTextStorageKey()) || '{}');
+        } catch (_) {
+            stored = {};
+        }
+
+        return Object.fromEntries(Object.entries(definitions).map(([key, defaults]) => [
+            key,
+            normalizeFrontTextSetting(stored[key], defaults),
+        ]));
+    };
+
+    let frontTextSettings = loadFrontTextSettings();
+    let selectedFrontTextKey = Object.keys(frontTextSettings)[0];
+    const frontTextSetting = key => frontTextSettings[key] || frontTextDefinitions()[key];
+
+    // The vertical blocks (department strip, FUSO ID number) carry their position in a
+    // translate rather than x/y, so the placement attributes differ per element.
+    const frontTextAttributes = key => {
+        const setting = frontTextSetting(key);
+        const placement = frontTextDefinitions()[key]?.rotated
+            ? `transform="translate(${setting.x} ${setting.y}) rotate(-90)"`
+            : `x="${setting.x}" y="${setting.y}"`;
+        return `${placement} font-size="${setting.fontSize}" data-front-text-key="${key}" style="cursor:move;touch-action:none"`;
+    };
+
+    const saveFrontTextSettings = () => {
+        try {
+            window.localStorage.setItem(frontTextStorageKey(), JSON.stringify(frontTextSettings));
+        } catch (_) {
+            // Text editing still works for the current page if browser storage is unavailable.
+        }
+    };
+
     const createMitsubishiFront = () => `
     <svg xmlns="${SVG_NS}" id="idFront" viewBox="0 0 ${CARD_WIDTH} ${CARD_HEIGHT}"
          width="${CARD_WIDTH}" height="${CARD_HEIGHT}" role="img" aria-label="Employee ID front">
@@ -404,21 +483,20 @@
         </defs>
         <image href="${selectedTemplate().front}" x="0" y="0" width="${CARD_WIDTH}" height="${CARD_HEIGHT}"/>
         ${createPhotoMarkup()}
-        <text x="381.25" y="535.85" class="mm-medium" fill="#000" font-size="28.5">
-            <tspan x="381.25" y="535.85">EMPLOYEE NO.</tspan>
-            <tspan x="381.25" y="564.05">${escapeXml(employee.employeeNo)}</tspan>
+        <text class="mm-medium" fill="#000" ${frontTextAttributes('employeeNo')}>
+            <tspan x="${frontTextSetting('employeeNo').x}" y="${frontTextSetting('employeeNo').y}">EMPLOYEE NO.</tspan>
+            <tspan x="${frontTextSetting('employeeNo').x}" y="${frontTextSetting('employeeNo').y + 28.2}">${escapeXml(employee.employeeNo)}</tspan>
         </text>
-        <text x="30.77" y="650.85" class="mm-medium" fill="#e50014"
-              font-size="${nameFontSize}">${escapeXml(employee.name)}</text>
-        <text x="33.1" y="688.78" class="mm-medium" fill="#000"
-              font-size="${positionFontSize}">${escapeXml(employee.position)}</text>
+        <text class="mm-medium" fill="#e50014"
+              ${frontTextAttributes('name')}>${escapeXml(employee.name)}</text>
+        <text class="mm-medium" fill="#000"
+              ${frontTextAttributes('position')}>${escapeXml(employee.position)}</text>
         ${mitsubishiSignatureMarkup}
-        <text x="292.63" y="818.6" text-anchor="middle" class="mm-medium"
-              fill="#000" font-size="25">Employee’s Signature</text>
-        <text transform="translate(${departmentTranslateX} 454.7) rotate(-90)" class="mm-medium"
-              fill="#fff" font-size="${departmentFontSize}">
+        <text text-anchor="middle" class="mm-medium"
+              fill="#000" ${frontTextAttributes('signatureLabel')}>Employee’s Signature</text>
+        <text class="mm-medium" fill="#fff" ${frontTextAttributes('department')}>
             ${departmentLines.map((line, index) =>
-                `<tspan x="0" y="${index * 89}">${escapeXml(line)}</tspan>`
+                `<tspan x="0" y="${index * 89 * (frontTextSetting('department').fontSize / departmentFontSize)}">${escapeXml(line)}</tspan>`
             ).join('')}
         </text>
     </svg>`;
@@ -439,14 +517,14 @@
             ? `<image href="${escapeXml(selectedTemplate().frontOverlay)}" x="0" y="0"
                       width="${CARD_WIDTH}" height="${CARD_HEIGHT}" pointer-events="none"/>`
             : ''}
-        <text transform="translate(53.4 566.9) rotate(-90)" class="mm-medium"
-              fill="#f7f7f7" font-size="${fusoDepartmentFontSize}">${escapeXml(fusoDepartmentText)}</text>
-        <text x="30.3" y="732.6" class="mm-bold" fill="#000"
-              font-size="${fusoNameFontSize}">${escapeXml(employee.name)}</text>
-        <text x="30.3" y="768.7" class="mm-regular" fill="#000"
-              font-size="${fusoPositionFontSize}">${escapeXml(employee.position)}</text>
-        <text transform="translate(557.3 906.5) rotate(-90)" class="mm-medium"
-              fill="#fff" font-size="25.6">ID No. ${escapeXml(employee.employeeNo)}</text>
+        <text class="mm-medium"
+              fill="#f7f7f7" ${frontTextAttributes('department')}>${escapeXml(fusoDepartmentText)}</text>
+        <text class="mm-bold" fill="#000"
+              ${frontTextAttributes('name')}>${escapeXml(employee.name)}</text>
+        <text class="mm-regular" fill="#000"
+              ${frontTextAttributes('position')}>${escapeXml(employee.position)}</text>
+        <text class="mm-medium"
+              fill="#fff" ${frontTextAttributes('idNumber')}>ID No. ${escapeXml(employee.employeeNo)}</text>
     </svg>`;
 
     const createNtrFront = () => `
@@ -461,17 +539,17 @@
         </defs>
         <image href="${selectedTemplate().front}" x="0" y="0" width="${CARD_WIDTH}" height="${CARD_HEIGHT}"/>
         ${createPhotoMarkup()}
-        <text transform="translate(70 901) rotate(-90)" class="hyundai-bold"
-              fill="#fff" font-size="${ntrDepartmentFontSize}">${escapeXml(ntrDepartmentText)}</text>
-        <text x="499" y="558.5" text-anchor="middle" class="hyundai-text-medium"
-              fill="#fff" font-size="26.8">${escapeXml(employee.employeeNo)}</text>
-        <text x="341" y="638" text-anchor="middle" class="lucida"
-              fill="#fff" font-size="${ntrNameFontSize}">${escapeXml(employee.name)}</text>
-        <text x="337" y="672" text-anchor="middle" class="hyundai-regular"
-              fill="#fff" font-size="${ntrPositionFontSize}">${escapeXml(employee.position)}</text>
+        <text class="hyundai-bold"
+              fill="#fff" ${frontTextAttributes('department')}>${escapeXml(ntrDepartmentText)}</text>
+        <text text-anchor="middle" class="hyundai-text-medium"
+              fill="#fff" ${frontTextAttributes('employeeNo')}>${escapeXml(employee.employeeNo)}</text>
+        <text text-anchor="middle" class="lucida"
+              fill="#fff" ${frontTextAttributes('name')}>${escapeXml(employee.name)}</text>
+        <text text-anchor="middle" class="hyundai-regular"
+              fill="#fff" ${frontTextAttributes('position')}>${escapeXml(employee.position)}</text>
         ${ntrSignatureMarkup}
-        <text x="340" y="884" text-anchor="middle" class="hyundai-regular"
-              fill="#fff" font-size="24.7">Employee’s Signature</text>
+        <text text-anchor="middle" class="hyundai-regular"
+              fill="#fff" ${frontTextAttributes('signatureLabel')}>Employee’s Signature</text>
     </svg>`;
 
     const createFront = () => isNtrTemplate()
@@ -767,6 +845,142 @@
     document.addEventListener('pointercancel', finishPhotoDrag);
     applyPhotoPlacement();
 
+    const frontTextSelect = document.querySelector('[data-front-text-select]');
+    const frontTextInputs = [...document.querySelectorAll('[data-front-text-control]')];
+    const frontTextOutputs = [...document.querySelectorAll('[data-front-text-output]')];
+
+    const populateFrontTextSelect = () => {
+        const definitions = frontTextDefinitions();
+        const keys = Object.keys(definitions);
+        if (!keys.includes(selectedFrontTextKey)) {
+            selectedFrontTextKey = keys[0];
+        }
+
+        frontTextSelect.replaceChildren(...Object.entries(definitions).map(([key, definition]) => {
+            const option = document.createElement('option');
+            option.value = key;
+            option.textContent = definition.label;
+            return option;
+        }));
+        frontTextSelect.value = selectedFrontTextKey;
+    };
+
+    const syncFrontTextControls = () => {
+        const setting = frontTextSetting(selectedFrontTextKey);
+        if (!setting) return;
+
+        for (const input of frontTextInputs) {
+            input.value = String(setting[input.dataset.frontTextControl]);
+        }
+        for (const output of frontTextOutputs) {
+            const key = output.dataset.frontTextOutput;
+            const value = setting[key];
+            output.value = key === 'fontSize'
+                ? `${Number(value).toFixed(1)} px`
+                : `${Math.round(value)} px`;
+        }
+    };
+
+    const selectFrontText = key => {
+        if (!frontTextSettings[key]) return;
+        selectedFrontTextKey = key;
+        frontTextSelect.value = key;
+        syncFrontTextControls();
+    };
+
+    // Re-rendering the front rebuilds the photo nodes too, so the photo placement has to
+    // be re-applied to the fresh markup after every text change.
+    const renderFrontWithPhoto = () => {
+        renderFront();
+        applyPhotoPlacement();
+    };
+
+    const updateFrontText = (changes, persist = true) => {
+        const defaults = frontTextDefinitions()[selectedFrontTextKey];
+        if (!defaults) return;
+        frontTextSettings[selectedFrontTextKey] = normalizeFrontTextSetting({
+            ...frontTextSettings[selectedFrontTextKey],
+            ...changes,
+        }, defaults);
+        renderFrontWithPhoto();
+        syncFrontTextControls();
+        if (persist) saveFrontTextSettings();
+    };
+
+    populateFrontTextSelect();
+    syncFrontTextControls();
+
+    frontTextSelect.addEventListener('change', () => selectFrontText(frontTextSelect.value));
+    frontTextInputs.forEach(input => input.addEventListener('input', () => {
+        if (input.value === '') return;
+        const value = Number(input.value);
+        if (Number.isFinite(value)) {
+            updateFrontText({ [input.dataset.frontTextControl]: value });
+        }
+    }));
+    frontTextInputs.forEach(input => input.addEventListener('change', () => {
+        if (input.value === '') syncFrontTextControls();
+    }));
+
+    document.querySelector('[data-front-text-reset]')?.addEventListener('click', () => {
+        const defaults = frontTextDefinitions()[selectedFrontTextKey];
+        if (!defaults) return;
+        frontTextSettings[selectedFrontTextKey] = normalizeFrontTextSetting(defaults, defaults);
+        renderFrontWithPhoto();
+        syncFrontTextControls();
+        saveFrontTextSettings();
+    });
+
+    document.querySelector('[data-front-text-reset-all]')?.addEventListener('click', () => {
+        for (const [key, defaults] of Object.entries(frontTextDefinitions())) {
+            frontTextSettings[key] = normalizeFrontTextSetting(defaults, defaults);
+        }
+        renderFrontWithPhoto();
+        syncFrontTextControls();
+        saveFrontTextSettings();
+    });
+
+    let frontTextDrag = null;
+    frontContainer.addEventListener('pointerdown', event => {
+        if (!(event.target instanceof Element)) return;
+        const text = event.target.closest('[data-front-text-key]');
+        if (!text) return;
+
+        const key = text.dataset.frontTextKey;
+        selectFrontText(key);
+        const point = cardPointFromPointer(event);
+        const setting = frontTextSetting(key);
+        frontTextDrag = {
+            pointerId: event.pointerId,
+            pointX: point.x,
+            pointY: point.y,
+            textX: setting.x,
+            textY: setting.y,
+        };
+        frontContainer.classList.add('is-front-text-dragging');
+        event.preventDefault();
+    });
+
+    document.addEventListener('pointermove', event => {
+        if (!frontTextDrag || event.pointerId !== frontTextDrag.pointerId) return;
+        const point = cardPointFromPointer(event);
+        updateFrontText({
+            x: Math.round(frontTextDrag.textX + point.x - frontTextDrag.pointX),
+            y: Math.round(frontTextDrag.textY + point.y - frontTextDrag.pointY),
+        }, false);
+        event.preventDefault();
+    });
+
+    const finishFrontTextDrag = event => {
+        if (!frontTextDrag || event.pointerId !== frontTextDrag.pointerId) return;
+        frontTextDrag = null;
+        frontContainer.classList.remove('is-front-text-dragging');
+        saveFrontTextSettings();
+    };
+
+    document.addEventListener('pointerup', finishFrontTextDrag);
+    document.addEventListener('pointercancel', finishFrontTextDrag);
+
     const backContainer = document.getElementById('backContainer');
     const backTextSelect = document.querySelector('[data-back-text-select]');
     const backTextInputs = [...document.querySelectorAll('[data-back-text-control]')];
@@ -920,6 +1134,8 @@
             if (photoPlacementProfile() !== previousPhotoProfile) {
                 Object.assign(photoPlacement, loadPhotoPlacement());
             }
+            frontTextSettings = loadFrontTextSettings();
+            selectedFrontTextKey = Object.keys(frontTextSettings)[0];
             backTextSettings = loadBackTextSettings();
             selectedBackTextKey = Object.keys(backTextSettings)[0];
             try {
@@ -930,6 +1146,8 @@
             renderFront();
             renderBack();
             applyPhotoPlacement();
+            populateFrontTextSelect();
+            syncFrontTextControls();
             populateBackTextSelect();
             syncBackTextControls();
         });
