@@ -58,6 +58,15 @@ require_once __DIR__ . '/includes/functions.php';
             <p>Request printer ink and attach the requisition slip together with a clear image of the current ink level.</p>
             <span class="public-choice-action">Open ink request form <b>→</b></span>
         </a>
+        <a class="public-choice access-choice" href="public_access_request.php">
+            <span class="public-choice-icon">
+                <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </span>
+            <span class="public-choice-state">Public form</span>
+            <h2>DMIS Access Request</h2>
+            <p>Request specific DMIS module access by providing your name, department, DMIS username, and reason.</p>
+            <span class="public-choice-action">Open access request form <b>→</b></span>
+        </a>
     </section>
 
     <section class="public-notice">

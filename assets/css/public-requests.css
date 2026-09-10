@@ -31,7 +31,7 @@
 .public-kicker, .public-step { color: var(--red-dark); font-size: .65rem; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
 .public-hero h1, .public-form-header h1, .public-success h1 { margin: 7px 0 0; font-family: "MICEI Head", sans-serif; font-size: clamp(2rem, 5vw, 3.25rem); line-height: 1.05; letter-spacing: -.04em; }
 .public-hero p, .public-form-header p, .public-success p { margin: 13px auto 0; color: var(--muted); font-size: .92rem; line-height: 1.65; }
-.public-form-choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.public-form-choices { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
 .public-choice {
     position: relative;
     min-height: 220px;
@@ -50,6 +50,8 @@
 .public-choice-icon { width: 44px; height: 44px; display: grid; place-items: center; color: var(--red); border-radius: 14px; background: var(--red-soft); }
 .public-choice-icon svg { width: 23px; height: 23px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .ink-choice .public-choice-icon { color: #3866a4; background: #e5eff8; }
+.access-choice .public-choice-icon { color: #6a4ea0; background: #ece5f8; }
+.access-choice .public-choice-action { color: #6a4ea0; }
 .public-choice-state { position: absolute; top: 20px; right: 20px; padding: 5px 8px; color: #176650; border: 1px solid #d8ebe4; border-radius: 999px; background: #f2faf7; font-size: .58rem; font-weight: 800; }
 .public-choice h2 { margin: 18px 0 0; font-family: "MICEI Head", sans-serif; font-size: 1.15rem; }
 .public-choice p { margin: 7px 0 16px; color: var(--muted); font-size: .74rem; line-height: 1.5; }
@@ -120,6 +122,7 @@
     html[data-theme="dark"] .public-brand > span:first-child { border-color: #424a54; background: #fff; }
     html[data-theme="dark"] .public-choice-state { color: #9be0c5; border-color: #315e50; background: #203a32; }
     html[data-theme="dark"] .ink-choice .public-choice-icon { color: #9ac7ff; background: #263b55; }
+    html[data-theme="dark"] .access-choice .public-choice-icon { color: #c9b3ee; background: #372b4d; }
     html[data-theme="dark"] .public-file-drop { color: #d1d5da; border-color: #74444c; background: #2b2225; }
     html[data-theme="dark"] .public-file-drop:hover { background: #362428; }
     html[data-theme="dark"] .public-consent { color: #c8cdd3; }

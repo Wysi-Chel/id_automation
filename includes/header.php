@@ -40,6 +40,10 @@ $currentPage = basename($_SERVER['PHP_SELF'] ?? '');
                 <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h6"/></svg>
                 ID Requests
             </a>
+            <a class="<?= in_array($currentPage, ['access_requests.php','access_request_view.php'], true) ? 'active' : '' ?>" href="access_requests.php">
+                <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Access Requests
+            </a>
         </nav>
         <div class="sidebar-footer">
             <div class="sidebar-theme-control">
