@@ -1,0 +1,5 @@
+# Uploaded employee photos and signatures stay on the server, not in git
+uploads/photos/*
+uploads/signatures/*
+!uploads/photos/.gitkeep
+!uploads/signatures/.gitkeep
