@@ -76,8 +76,8 @@ Also import `migrate_add_employee_company_code.sql` once to enable MGSC, MKC,
 FUSO, and NGSC company assignment and filtering.
 Import `migrate_add_manila_office_department.sql` once to add the Manila Office
 department.
-Import `migrate_separate_user_accounts.sql` once to give ITA, JRN, and LBA their
-own sign-in in place of the shared `admin` account.
+Import `migrate_separate_user_accounts.sql` to give ITA, JRN, and LBA their own
+sign-in in place of the shared `admin` account. It is safe to import again.
 
 ## Initial login
 
@@ -91,8 +91,9 @@ Pick your account and enter its password.
 | ITA | `ita` | Administrator | IT review and implementation |
 | JRN | `jrn` | Administrator | IT review and implementation |
 
-All three accounts start with the password the shared `admin` account had
-(`admin123` on a fresh `setup.sql` install), and the `admin` account is deactivated.
+All three accounts start with the default password issued by the IT Department,
+and the `admin` account is deactivated. Importing the migration again puts any
+account whose owner has not yet changed its password back on the default.
 Each person should then set their own password with **Change password** on the
 System Launcher (at least 8 characters).
 
