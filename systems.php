@@ -15,8 +15,10 @@ $flashes = pull_flashes();
     <link rel="icon" type="image/png" sizes="145x145" href="assets/img/favicon.png">
     <meta name="theme-color" content="#f4f5f7">
     <script src="assets/js/theme-init.js"></script>
-    <link rel="stylesheet" href="assets/css/app.css">
+    <link rel="stylesheet" href="<?= e(asset_url('assets/css/app.css')) ?>">
     <script src="assets/js/theme.js" defer></script>
+    <script src="<?= e(asset_url('assets/js/change-password.js')) ?>" defer></script>
+    <script src="<?= e(asset_url('assets/js/password-toggle.js')) ?>" defer></script>
 </head>
 <body class="system-hub-body">
 <div class="system-hub-backdrop" aria-hidden="true">
@@ -50,6 +52,13 @@ $flashes = pull_flashes();
             <span class="system-hub-avatar" aria-hidden="true">
                 <?= e(strtoupper(substr((string) ($user['full_name'] ?? 'U'), 0, 1))) ?>
             </span>
+            <button class="system-hub-password" type="button" data-change-password-open>
+                <svg aria-hidden="true" viewBox="0 0 24 24">
+                    <rect x="4.5" y="10.5" width="15" height="10" rx="2"/>
+                    <path d="M8 10.5V7a4 4 0 0 1 8 0v3.5M12 14.5v2"/>
+                </svg>
+                <span>Change password</span>
+            </button>
             <a class="system-hub-signout" href="logout.php">
                 <svg aria-hidden="true" viewBox="0 0 24 24">
                     <path d="M10 17l5-5-5-5M15 12H3"/>
@@ -208,5 +217,41 @@ $flashes = pull_flashes();
     <footer class="system-hub-footer">
     </footer>
 </main>
+
+<dialog class="password-dialog" id="change-password-dialog" aria-labelledby="change-password-title">
+    <form method="post" action="change_password.php">
+        <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
+        <div class="password-dialog-header">
+            <h2 id="change-password-title">Change password</h2>
+            <p>For <?= e($user['full_name'] ?? 'System user') ?></p>
+        </div>
+        <div class="form-group">
+            <label for="current_password">Current password</label>
+            <div class="password-field">
+                <input id="current_password" name="current_password" type="password" autocomplete="current-password" required>
+                <?= password_toggle_button() ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="new_password">New password</label>
+            <div class="password-field">
+                <input id="new_password" name="new_password" type="password" autocomplete="new-password" minlength="<?= MIN_PASSWORD_LENGTH ?>" required>
+                <?= password_toggle_button() ?>
+            </div>
+            <span class="help">At least <?= MIN_PASSWORD_LENGTH ?> characters.</span>
+        </div>
+        <div class="form-group">
+            <label for="confirm_password">Confirm new password</label>
+            <div class="password-field">
+                <input id="confirm_password" name="confirm_password" type="password" autocomplete="new-password" minlength="<?= MIN_PASSWORD_LENGTH ?>" required>
+                <?= password_toggle_button() ?>
+            </div>
+        </div>
+        <div class="password-dialog-actions">
+            <button class="btn btn-secondary" type="button" data-change-password-close>Cancel</button>
+            <button class="btn btn-primary" type="submit">Save password</button>
+        </div>
+    </form>
+</dialog>
 </body>
 </html>

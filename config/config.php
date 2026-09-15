@@ -25,6 +25,7 @@ const DB_USER = 'root';
 const DB_PASS = '';
 
 const MAX_UPLOAD_BYTES = 5 * 1024 * 1024;
+const MIN_PASSWORD_LENGTH = 8;
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();

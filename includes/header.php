@@ -18,6 +18,7 @@ $currentPage = basename($_SERVER['PHP_SELF'] ?? '');
     <link rel="stylesheet" href="<?= e(asset_url('assets/css/app.css')) ?>">
     <script src="<?= e(asset_url('assets/js/theme.js')) ?>" defer></script>
     <script src="<?= e(asset_url('assets/js/app.js')) ?>" defer></script>
+    <script src="<?= e(asset_url('assets/js/password-toggle.js')) ?>" defer></script>
 </head>
 <body>
 <?php if ($user): ?>

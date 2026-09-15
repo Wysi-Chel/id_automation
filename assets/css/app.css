@@ -311,6 +311,7 @@ tr:last-child td { border-bottom: 0; }
     font-size: .8rem;
     box-shadow: 0 5px 12px rgba(34,40,49,.16);
 }
+.system-hub-password,
 .system-hub-signout {
     min-height: 38px;
     margin-left: 4px;
@@ -322,11 +323,14 @@ tr:last-child td { border-bottom: 0; }
     border: 1px solid #e0e3e7;
     border-radius: 999px;
     background: #fff;
+    font-family: inherit;
     font-size: .73rem;
     font-weight: 700;
     text-decoration: none;
+    cursor: pointer;
     transition: color .18s ease, border-color .18s ease, background .18s ease;
 }
+.system-hub-password svg,
 .system-hub-signout svg {
     width: 16px;
     height: 16px;
@@ -336,6 +340,7 @@ tr:last-child td { border-bottom: 0; }
     stroke-linecap: round;
     stroke-linejoin: round;
 }
+.system-hub-password:hover,
 .system-hub-signout:hover {
     color: #991927;
     border-color: #e8bdc3;
@@ -1283,4 +1288,88 @@ input:focus, select:focus, textarea:focus {
     .public-admin-images { grid-template-columns: 1fr; }
     .system-hub-public-link { width: 32px; min-height: 32px; padding: 0; justify-content: center; }
     .system-hub-public-link span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
+
+.login-accounts { min-width: 0; margin: 0 0 15px; padding: 0; border: 0; }
+.login-accounts legend { margin-bottom: 7px; padding: 0; font-size: 13px; font-weight: 650; }
+.login-account-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.login-account-option {
+    min-height: 46px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: #fff;
+    font-size: .86rem;
+    font-weight: 800;
+    letter-spacing: .04em;
+    cursor: pointer;
+    transition: color .18s ease, border-color .18s ease, background .18s ease;
+}
+.login-account-option:hover { border-color: #d5aeb4; }
+.login-account-option input { width: 16px; height: 16px; flex: 0 0 16px; margin: 0; padding: 0; accent-color: var(--red); cursor: pointer; }
+.login-account-option input:focus { outline: none; }
+.login-account-option:has(input:checked) { color: var(--red-dark); border-color: var(--red); background: #fff8f9; box-shadow: 0 0 0 2px rgba(191,31,47,.12); }
+.login-account-option:has(input:focus-visible) { outline: 3px solid rgba(215,25,32,.18); outline-offset: 1px; }
+.password-dialog {
+    width: min(420px, calc(100% - 32px));
+    padding: 26px;
+    color: var(--ink);
+    border: 1px solid rgba(111,98,94,.14);
+    border-radius: 22px;
+    background: var(--surface);
+    box-shadow: 0 24px 70px rgba(80,54,45,.22);
+}
+.password-dialog::backdrop { background: rgba(21,25,30,.45); backdrop-filter: blur(2px); }
+.password-dialog-header { margin-bottom: 18px; }
+.password-dialog-header h2 { margin: 0; font-family: "MICEI Head", "Segoe UI", sans-serif; font-size: 1.2rem; }
+.password-dialog-header p { margin: 5px 0 0; color: var(--muted); font-size: .8rem; }
+.password-dialog .form-group { margin-bottom: 14px; }
+.password-dialog-actions { margin-top: 20px; display: flex; justify-content: flex-end; gap: 9px; }
+.password-field { position: relative; }
+.password-field input { padding-right: 46px; }
+/* Edge draws its own reveal button inside password inputs; ours replaces it. */
+.password-field input::-ms-reveal { display: none; }
+.password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transform: translateY(-50%);
+}
+.password-toggle:hover { color: var(--ink); }
+.password-toggle:focus-visible { color: var(--ink); outline: 3px solid rgba(215,25,32,.18); }
+.password-toggle .btn-icon { width: 18px; height: 18px; flex-basis: 18px; }
+.password-toggle[aria-pressed="false"] .btn-icon:last-child,
+.password-toggle[aria-pressed="true"] .btn-icon:first-child { display: none; }
+
+@media screen {
+    html[data-theme="dark"] .system-hub-password { color: #d3d7dc; border-color: #47505a; background: #272e35; }
+    html[data-theme="dark"] .system-hub-password:hover { color: #ffadb7; border-color: #75404a; background: #352329; }
+    html[data-theme="dark"] .login-account-option { border-color: var(--line); background: #252c33; }
+    html[data-theme="dark"] .login-account-option:has(input:checked) { color: #ffadb7; border-color: #75404a; background: #352329; box-shadow: none; }
+    html[data-theme="dark"] .password-dialog { border-color: #3d444d; box-shadow: 0 24px 70px rgba(0,0,0,.45); }
+    html[data-theme="dark"] .password-dialog::backdrop { background: rgba(0,0,0,.55); }
+}
+
+@media (max-width: 760px) {
+    .system-hub-password { width: 32px; min-height: 32px; margin-left: 0; padding: 0; justify-content: center; }
+    .system-hub-password span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    .password-dialog { padding: 20px; }
+}
+@media (max-width: 400px) {
+    /* Frees room in the nav for the change-password button on the narrowest phones. */
+    .system-hub-avatar { display: none; }
 }

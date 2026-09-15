@@ -6,7 +6,7 @@ CREATE TABLE users (
     username VARCHAR(80) NOT NULL UNIQUE,
     full_name VARCHAR(150) NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
-    role ENUM('Administrator','Encoder') NOT NULL DEFAULT 'Encoder',
+    role ENUM('Administrator','Encoder','Super Administrator') NOT NULL DEFAULT 'Encoder',
     is_active TINYINT(1) NOT NULL DEFAULT 1,
     last_login_at DATETIME NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP

@@ -3,21 +3,35 @@ declare(strict_types=1);
 require_once __DIR__ . '/config/database.php';
 require_once __DIR__ . '/includes/functions.php';
 
+// Sign-in choices, in display order: username => label.
+const LOGIN_ACCOUNTS = [
+    'lba' => 'LBA',
+    'ita' => 'ITA',
+    'jrn' => 'JRN',
+];
+
 if (current_user()) {
     redirect('systems.php');
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     verify_csrf();
+    $username = (string) ($_POST['username'] ?? '');
     $password = (string) ($_POST['password'] ?? '');
 
-    $stmt = db()->query(
+    if (!isset(LOGIN_ACCOUNTS[$username])) {
+        flash('danger', 'Choose an account to sign in.');
+        redirect('login.php');
+    }
+
+    $stmt = db()->prepare(
         "SELECT *
          FROM users
-         WHERE is_active = 1
-         ORDER BY (role = 'Administrator') DESC, id ASC
+         WHERE username = ?
+           AND is_active = 1
          LIMIT 1"
     );
+    $stmt->execute([$username]);
     $user = $stmt->fetch();
 
     if ($user && password_verify($password, $user['password_hash'])) {
@@ -33,10 +47,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         redirect('systems.php');
     }
 
-    flash('danger', 'Invalid password.');
-    redirect('login.php');
+    flash('danger', 'Incorrect password for ' . LOGIN_ACCOUNTS[$username] . '.');
+    redirect('login.php?account=' . urlencode($username));
 }
 
+$selectedAccount = (string) ($_GET['account'] ?? '');
 $pageTitle = 'Sign in';
 require __DIR__ . '/includes/header.php';
 ?>
@@ -45,9 +60,23 @@ require __DIR__ . '/includes/header.php';
     <p></p>
     <form method="post">
         <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
+        <fieldset class="login-accounts">
+            <legend>Sign in as</legend>
+            <div class="login-account-options">
+                <?php foreach (LOGIN_ACCOUNTS as $accountUsername => $accountLabel): ?>
+                    <label class="login-account-option">
+                        <input type="radio" name="username" value="<?= e($accountUsername) ?>" <?= $accountUsername === $selectedAccount ? 'checked' : '' ?> required>
+                        <span><?= e($accountLabel) ?></span>
+                    </label>
+                <?php endforeach; ?>
+            </div>
+        </fieldset>
         <div class="form-group">
             <label for="password">Password</label>
-            <input id="password" name="password" type="password" autocomplete="current-password" required autofocus>
+            <div class="password-field">
+                <input id="password" name="password" type="password" autocomplete="current-password" required <?= isset(LOGIN_ACCOUNTS[$selectedAccount]) ? 'autofocus' : '' ?>>
+                <?= password_toggle_button() ?>
+            </div>
         </div>
         <button class="btn btn-primary" type="submit">Sign in</button>
     </form>

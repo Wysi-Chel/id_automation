@@ -14,7 +14,7 @@ function require_auth(): void
 function require_admin(): void
 {
     require_auth();
-    if ((current_user()['role'] ?? '') !== 'Administrator') {
+    if (!in_array(current_user()['role'] ?? '', ['Super Administrator', 'Administrator'], true)) {
         http_response_code(403);
         exit('Administrator access is required.');
     }

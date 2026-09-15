@@ -27,6 +27,7 @@ function button_icon(string $name): string
         'rotate-ccw' => '<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>',
         'send' => '<path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/>',
         'circle-check' => '<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>',
+        'eye-off' => '<path d="M10.73 5.08a10.74 10.74 0 0 1 11.21 6.57 1 1 0 0 1 0 .7 10.75 10.75 0 0 1-1.45 2.49"/><path d="M14.08 14.16a3 3 0 0 1-4.24-4.24"/><path d="M17.48 17.5a10.75 10.75 0 0 1-15.42-5.15 1 1 0 0 1 0-.7 10.75 10.75 0 0 1 4.45-5.14"/><path d="m2 2 20 20"/>',
         default => '',
     };
 
@@ -35,6 +36,14 @@ function button_icon(string $name): string
     }
 
     return '<svg class="btn-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' . $content . '</svg>';
+}
+
+// Eye button that reveals the password input beside it; wired up by assets/js/password-toggle.js.
+function password_toggle_button(): string
+{
+    return '<button class="password-toggle" type="button" data-password-toggle aria-label="Show password" aria-pressed="false" title="Show password">'
+        . button_icon('eye') . button_icon('eye-off')
+        . '</button>';
 }
 
 function redirect(string $path): never

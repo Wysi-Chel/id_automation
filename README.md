@@ -76,13 +76,25 @@ Also import `migrate_add_employee_company_code.sql` once to enable MGSC, MKC,
 FUSO, and NGSC company assignment and filtering.
 Import `migrate_add_manila_office_department.sql` once to add the Manila Office
 department.
+Import `migrate_separate_user_accounts.sql` once to give ITA, JRN, and LBA their
+own sign-in in place of the shared `admin` account.
 
 ## Initial login
 
-- Username: `admin`
-- Password: `admin123`
+The sign-in page lists the LBA, ITA, and JRN accounts as radio buttons, so
+`migrate_separate_user_accounts.sql` must be imported before anyone can sign in.
+Pick your account and enter its password.
 
-Change this password before production use by replacing the password hash in the database with a new PHP `password_hash()` value or by adding a user-management screen.
+| Account | Username | Role | System Monitoring access requests |
+| --- | --- | --- | --- |
+| LBA | `lba` | Super Administrator | Final review |
+| ITA | `ita` | Administrator | IT review and implementation |
+| JRN | `jrn` | Administrator | IT review and implementation |
+
+All three accounts start with the password the shared `admin` account had
+(`admin123` on a fresh `setup.sql` install), and the `admin` account is deactivated.
+Each person should then set their own password with **Change password** on the
+System Launcher (at least 8 characters).
 
 ## Server requirements
 
