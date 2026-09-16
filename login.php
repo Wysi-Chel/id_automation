@@ -5,7 +5,7 @@ require_once __DIR__ . '/includes/functions.php';
 
 // Sign-in choices, in display order: username => label.
 const LOGIN_ACCOUNTS = [
-    'lba' => 'LBA',
+    'sa' => 'SA',
     'ita' => 'ITA',
     'jrn' => 'JRN',
 ];

@@ -76,18 +76,21 @@ Also import `migrate_add_employee_company_code.sql` once to enable MGSC, MKC,
 FUSO, and NGSC company assignment and filtering.
 Import `migrate_add_manila_office_department.sql` once to add the Manila Office
 department.
-Import `migrate_separate_user_accounts.sql` to give ITA, JRN, and LBA their own
+Import `migrate_separate_user_accounts.sql` to give ITA, JRN, and SA their own
 sign-in in place of the shared `admin` account. It is safe to import again.
+Import `migrate_rename_lba_to_sa.sql` once on an installation that still has the
+old `lba` account: it renames that account to `sa` (SA, System Admin) and keeps
+its password and audit history.
 
 ## Initial login
 
-The sign-in page lists the LBA, ITA, and JRN accounts as radio buttons, so
+The sign-in page lists the SA, ITA, and JRN accounts as radio buttons, so
 `migrate_separate_user_accounts.sql` must be imported before anyone can sign in.
 Pick your account and enter its password.
 
 | Account | Username | Role | System Monitoring access requests |
 | --- | --- | --- | --- |
-| LBA | `lba` | Super Administrator | Final review |
+| SA (System Admin) | `sa` | Super Administrator | Final review |
 | ITA | `ita` | Administrator | IT review and implementation |
 | JRN | `jrn` | Administrator | IT review and implementation |
 
