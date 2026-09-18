@@ -49,7 +49,7 @@ require_once __DIR__ . '/includes/functions.php';
             <p>Request a new company ID and provide the employee details, photo, and signature needed for processing.</p>
             <span class="public-choice-action">Open ID request form <b>→</b></span>
         </a>
-        <a class="public-choice ink-choice" href="/inkmonitoring/public_request.php">
+        <a class="public-choice ink-choice" href="https://forms.gle/GCwrQNZ7j1twg3kJ6">
             <span class="public-choice-icon">
                 <svg viewBox="0 0 24 24"><path d="M12 2.5s7 7.3 7 12.5a7 7 0 0 1-14 0c0-5.2 7-12.5 7-12.5Z"/><path d="M9 17.5c.7 1 1.7 1.5 3 1.5"/></svg>
             </span>
