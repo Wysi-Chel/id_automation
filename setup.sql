@@ -91,6 +91,7 @@ INSERT INTO departments (name, code) VALUES
 ('Accounting', 'ACC'),
 ('Sales', 'SAL'),
 ('Service', 'SER'),
+('Parts', 'PAR'),
 ('Information Technology', 'IT'),
 ('Human Resource', 'HR'),
 ('CNC', 'CNC'),
